@@ -2,3 +2,4 @@
 __pycache__/
 assets/
 temp.py
+*.sf2
