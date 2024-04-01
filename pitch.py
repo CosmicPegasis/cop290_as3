@@ -2,7 +2,7 @@ from menu import Menu
 import single_player
 
 
-class Pitch(Menu):
+class PitchResultMenu(Menu):
     def __init__(self):
         super().__init__("assets/single/background.mp3")
         self.OPTIONS = ["Info","Play Again","Back"]
