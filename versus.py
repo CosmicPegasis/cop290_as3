@@ -1,6 +1,6 @@
 from menu import Menu
 import main_menu
-
+import room
 
 class Versus(Menu):
     def __init__(self):
@@ -15,7 +15,8 @@ class Versus(Menu):
 
     def handle_selection(self, selected_option):
         if selected_option == 0:
-            print("Starting a new game...")
+            self.switch_screen = True
+            self.new_screen = room.Room()
         elif selected_option == 1:
             self.switch_screen = True
             self.new_screen = main_menu.MainMenu()
