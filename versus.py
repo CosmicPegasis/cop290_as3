@@ -1,6 +1,8 @@
 from menu import Menu
 import main_menu
 import room
+import waiting
+import pygame
 
 class Versus(Menu):
     def __init__(self):
@@ -16,7 +18,8 @@ class Versus(Menu):
     def handle_selection(self, selected_option):
         if selected_option == 0:
             self.switch_screen = True
-            self.new_screen = room.Room()
+            self.new_screen = waiting.Waiting()
+            pygame.mixer.music.pause()
         elif selected_option == 1:
             self.switch_screen = True
             self.new_screen = main_menu.MainMenu()
