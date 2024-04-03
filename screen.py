@@ -9,6 +9,8 @@ class Screen:
         self.new_screen = None
         self.asset_man = AssetManager()
         self.asset_man.load_bg_music(bg_music)
+        self.game_type = None
+        
 
     def update(self) -> None:
         pass
