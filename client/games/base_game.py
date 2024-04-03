@@ -9,9 +9,9 @@ import client.midi.voice_notes as voice_notes
 # TODO [Aviral] Add KBD Support
 class MidiGame:
     def __init__(
-        self, midi_file_path, note_length, narrate_pitch=False, narrate_name=True
+        self, midi_source, note_length, narrate_pitch=False, narrate_name=True
     ):
-        self.midi_file = midi_file_path
+        self.midi_source = midi_source
         self.cur_events = []
         self.clock = pygame.time.Clock()
         self.note_length = note_length
@@ -43,8 +43,8 @@ class MidiGame:
         )
 
     def initialise_narrator(self, narrate_pitch, narrate_name):
-        self.midi_narrator = play.MidiNarrator(
-            self.midi_file,
+        self.midi_narrator = play.MidiFileNarrator(
+            self.midi_source,
             self.note_length,
             narrate_name,
             narrate_pitch,
@@ -75,7 +75,7 @@ class MidiGame:
         pygame.midi.quit()
         pygame.mixer.music.pause()
         self.midi_narrator.stop_playback()
-        reference = get_midi_file_events(self.midi_file)
+        reference = get_midi_file_events(self.midi_source)
         return calc_score(self.cur_events, reference, self.note_length)
 
 

@@ -15,13 +15,15 @@ from client.utils.constants import (
 
 class LearnPitch(Menu):
     def __init__(self):
-        super().__init__("assets/versus/background.mp3")
+        super().__init__("assets/single/background.mp3")
         self.OPTIONS = ["Back"]
         self.flag = 0
 
         self.asset_man.load_sound("back", "assets/back.mp3")
 
-        self.game_screen = base_game.MidiGame("assets/midi/happy_birthday.mid", 4)
+        self.game_screen = base_game.BaseGame(
+            "assets/midi/learn_pitch.mid", 1, narrate_name=True, narrate_pitch=True
+        )
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
 
         self.asset_man.load_sound("3", "assets/numbers/3.mp3")

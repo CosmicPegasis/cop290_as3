@@ -17,7 +17,7 @@ class MultiGame(Menu):
         self.OPTIONS = []
         self.flag = 0
 
-        self.game_screen = base_game.MidiGame("assets/midi/happy_birthday.mid", 4)
+        self.game_screen = base_game.BaseGame("assets/midi/happy_birthday.mid", 4)
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.player_id = p
 

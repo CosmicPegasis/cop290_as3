@@ -17,18 +17,37 @@ def get_midi_file_events(midi_file):
 
 
 class MidiNarrator(VoiceNote):
-    def __init__(
-        self, midi_file, slow, narrate_name=True, narrate_note=False, midi_out=None
-    ):
+    def __init__(self, slow, narrate_name=True, narrate_note=False, midi_out=None):
         super().__init__()
         self.midi_events = []
         self.stop = False
-        self.midi_file = midi_file
         self.slow = slow
         if narrate_note:
             self.midi_out = midi_out
         self.narrate_note = narrate_note
         self.narrate_name = narrate_name
+
+    def _play(self):
+        raise NotImplementedError
+
+    def play(self):
+        self.t = threading.Thread(target=self._play, daemon=True)
+        self.t.start()
+
+    def stop_playback(self):
+        self.stop = True
+        self.t.join()
+
+    def is_playing(self):
+        return self.t.is_alive()
+
+
+class MidiFileNarrator(MidiNarrator):
+    def __init__(
+        self, midi_file, slow, narrate_name=True, narrate_note=False, midi_out=None
+    ):
+        super().__init__(slow, narrate_name, narrate_note, midi_out)
+        self.midi_file = midi_file
 
     def _play(self):
         file = mido.MidiFile(self.midi_file)
@@ -49,13 +68,19 @@ class MidiNarrator(VoiceNote):
 
         time.sleep(0.5)
 
-    def play(self):
-        self.t = threading.Thread(target=self._play, daemon=True)
-        self.t.start()
 
-    def stop_playback(self):
-        self.stop = True
-        self.t.join()
+class MidiEventNarrator(MidiNarrator):
+    def __init__(
+        self, midi_arr, slow, narrate_name=True, narrate_note=False, midi_out=None
+    ):
+        super().__init__(slow, narrate_name, narrate_note, midi_out)
+        self.midi_arr = midi_arr
 
-    def is_playing(self):
-        return self.t.is_alive()
+    def _play(self):
+        for note, velocity, delay in self.midi_arr:
+            if not self.stop:
+                self.midi_out.note_on(note, velocity)
+                time.sleep(delay)
+                self.midi_out.note_off(note)
+
+        time.sleep(0.5)
