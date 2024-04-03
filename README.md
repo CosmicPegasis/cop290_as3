@@ -16,12 +16,13 @@
 - [ ] Whisper
 
 ## Aviral
-- [ ] Add pitch tutor
-- [ ] Add pitch practice
-- [ ] Add more songs
-- [ ] Handle Sharps and Chords
+- [x] Add pitch tutor
+- [x] Add pitch practice
+- [x] Handle Sharps
 - [ ] Change scoring system to work with time
 - [ ] Make multiplayer room non blocking
+- [ ] Handle Chords
+- [ ] Add more songs
 
 ## Testing
 - [ ] Test with real piano and notes
