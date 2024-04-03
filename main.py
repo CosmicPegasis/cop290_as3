@@ -90,7 +90,7 @@ while running:
             # redrawWindow(win, game, player) no need as there is already draw function
             move1 = game.get_player_move(0)
             move2 = game.get_player_move(1)
-            cur_screen.new_screen = multiplayer_game.MultiplayerGame(
+            cur_screen.new_screen = multiplayer_game.MultiGameResults(
                 move1, move2, player
             )
             cur_screen = cur_screen.new_screen

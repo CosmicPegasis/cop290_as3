@@ -18,7 +18,7 @@ class Room(Menu):
         if selected_option == 0:
             print("Ready")
             self.switch_screen = True
-            self.new_screen = multiplayer_game.MultiplayerGame()
+            self.new_screen = multiplayer_game.MultiGameResults()
         elif selected_option == 1:
             self.switch_screen = True
             self.new_screen = versus.Versus()

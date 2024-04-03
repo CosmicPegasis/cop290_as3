@@ -1,7 +1,7 @@
 from client.menu.menu import Menu
 import client.menu.single_player as single_player
 import pygame
-import client.pitch as pitch
+import client.games.learn_pitch as learn_pitch
 import time
 from client.constants import BLACK, WHITE, WINDOW_HEIGHT, WINDOW_WIDTH, SELECTED_COLOR
 
@@ -26,7 +26,7 @@ class PitchResultMenu(Menu):
         elif selected_option == 1:
             self.switch_screen = True
 
-            self.new_screen = pitch.Pitch()
+            self.new_screen = learn_pitch.LearnPitch()
             pygame.mixer.music.pause()
         elif selected_option == 2:
             self.switch_screen = True

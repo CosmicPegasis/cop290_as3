@@ -1,44 +1,37 @@
 from client.menu.menu import Menu
 import client.menu.single_player as single_player
-import client.game as game
+import client.games.base_game as base_game
 import pygame
-import client.menu.pitch_results as pitch_results
-import time
 from client.constants import BLACK, WHITE, WINDOW_HEIGHT, WINDOW_WIDTH, SELECTED_COLOR
 
 
-class Pitch(Menu):
-    def __init__(self):
+class MultiGame(Menu):
+    def __init__(self, p):
         super().__init__("assets/versus/background.mp3")
-        self.OPTIONS = ["Back"]
+        self.OPTIONS = []
         self.flag = 0
 
-        self.asset_man.load_sound("back", "assets/back.mp3")
-
-        self.game_screen = game.MidiGame("assets/midi/happy_birthday.mid", 4)
+        self.game_screen = base_game.MidiGame("assets/midi/happy_birthday.mid", 4)
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
+        self.player_id = p
 
-        self.asset_man.load_sound("3", "assets/numbers/3.mp3")
-        self.asset_man.load_sound("2", "assets/numbers/2.mp3")
-        self.asset_man.load_sound("1", "assets/numbers/1.mp3")
-        self.asset_man.load_sound(
-            "the_game_starts_in", "assets/numbers/the_game_starts_in.mp3"
-        )
-        self.game_type = "pitch"
+        self.game_type = "versus_act_mult_game"
+        self.score = 0
 
     def start_game(self):
         if self.flag == 0:
-            self.play_sound("the_game_starts_in")
-            time.sleep(1)
-            self.play_sound("3")
-            time.sleep(1)
-            self.play_sound("2")
-            time.sleep(1)
-            self.play_sound("1")
-            time.sleep(1)
-            self.flag = 1
+            # self.play_sound("the_game_starts_in")
+            # time.sleep(1)
+            # self.play_sound("3")
+            # time.sleep(1)
+            # self.play_sound("2")
+            # time.sleep(1)
+            # self.play_sound("1")
+            # time.sleep(1)
+            # self.flag =1
 
             self.game_screen.start()
+            self.flag = 1
 
     def update(self):
         pass
@@ -54,10 +47,8 @@ class Pitch(Menu):
     def render(self, window):
         window.fill(BLACK)
         score_font = pygame.font.Font(None, 48)
-        if self.game_screen.is_running():
-            score_text = score_font.render("The game has started...", True, WHITE)
-        else:
-            score_text = score_font.render("The game has been finished...", True, WHITE)
+
+        score_text = score_font.render("Player-" + str(self.player_id), True, WHITE)
 
         score_text_rect = score_text.get_rect()
         score_text_rect.midtop = (WINDOW_WIDTH // 2, 50)

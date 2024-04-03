@@ -2,7 +2,7 @@ from client.menu.menu import Menu
 import client.menu.single_player as single_player
 
 
-class Practice(Menu):
+class PracticePitch(Menu):
     def __init__(self):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = ["Play Again", "Back"]

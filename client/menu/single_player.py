@@ -1,11 +1,11 @@
 from client.menu.menu import Menu
 import client.menu.main_menu as main_menu
 import client.menu.pitch_results as pitch_results
-import client.pitch as pitch
-import client.practice as practice
+import client.games.learn_pitch as learn_pitch
+import client.games.practice_pitch as practice_pitch
 import client.menu.songs as songs
 import pygame
-import client.game as game
+import client.games.base_game as base_game
 import time
 
 
@@ -33,7 +33,7 @@ class SinglePlayer(Menu):
         elif selected_option == 1:
 
             self.switch_screen = True
-            self.new_screen = pitch.Pitch()
+            self.new_screen = learn_pitch.LearnPitch()
             pygame.mixer.music.pause()
         elif selected_option == 2:
             self.switch_screen = True
@@ -41,7 +41,7 @@ class SinglePlayer(Menu):
         elif selected_option == 3:
 
             self.switch_screen = True
-            self.new_screen = practice.Practice()
+            self.new_screen = practice_pitch.PracticePitch()
         else:
             self.switch_screen = True
             self.new_screen = main_menu.MainMenu()

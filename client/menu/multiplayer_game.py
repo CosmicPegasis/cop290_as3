@@ -4,7 +4,7 @@ from client.constants import BLACK, WHITE, WINDOW_HEIGHT, WINDOW_WIDTH, SELECTED
 import pygame
 
 
-class MultiplayerGame(Menu):
+class MultiGameResults(Menu):
     def __init__(self, move1, move2, player_id):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = ["Play Again", "Change Opponent", "Back"]

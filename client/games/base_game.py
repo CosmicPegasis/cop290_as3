@@ -67,20 +67,6 @@ class MidiGame:
         return calc_score(self.cur_events, reference, self.note_length)
 
 
-# TODO Do not use game_funct
-
-#     game.start()
-#     running = True
-#     while running:
-#         for event in pygame.event.get():
-#             if event == pygame.QUIT:
-#                 running = False
-#         game.handle_events()
-#         if not game.is_running():
-#             print(game.stop())
-#             running = False
-
-
 if __name__ == "__main__":
     pygame.init()
     game = MidiGame("assets/midi/happy_birthday.mid", 6, narrate_pitch=True)
