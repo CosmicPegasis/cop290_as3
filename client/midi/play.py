@@ -17,35 +17,37 @@ def get_midi_file_events(midi_file):
 
 
 class MidiNarrator(VoiceNote):
-    def __init__(self, midi_file, slow, midi_out=None):
+    def __init__(
+        self, midi_file, slow, narrate_name=True, narrate_note=False, midi_out=None
+    ):
         super().__init__()
         self.midi_events = []
         self.stop = False
         self.midi_file = midi_file
         self.slow = slow
-        self.midi_out = midi_out
-        # midi_out.note_on(60, 100)
-        # time.sleep(5)
-        # midi_out.note_off(60)
+        if narrate_note:
+            self.midi_out = midi_out
+        self.narrate_note = narrate_note
+        self.narrate_name = narrate_name
 
     def _play(self):
         file = mido.MidiFile(self.midi_file)
         for msg in file:
             if not self.stop:
-                if self.midi_out:
-                    time.sleep(msg.time * (self.slow / 2))
-                else:
-                    time.sleep(msg.time * self.slow)
                 if not msg.is_meta:
-                    if msg.type == "note_on":
-                        if msg.velocity > 0:
-                            # self.play_note(msg.note)
-                            if self.midi_out:
-                                self.midi_out.note_on(msg.note, 100)
-                                time.sleep(msg.time * (self.slow / 2))
-                                self.midi_out.note_off(msg.note)
+                    time.sleep(msg.time * self.slow)
+                    if msg.type == "note_on" and msg.velocity > 0:
+                        if self.narrate_name and self.narrate_note:
+                            self.play_note(msg.note)
+                            self.midi_out.note_on(msg.note, 100)
+                        elif self.narrate_note:
+                            self.midi_out.note_on(msg.note, 100)
+                        else:
+                            self.play_note(msg.note)
+                    elif msg.type == "note_off":
+                        self.midi_out.note_off(msg.note)
 
-        time.sleep(1)
+        time.sleep(0.5)
 
     def play(self):
         self.t = threading.Thread(target=self._play, daemon=True)
