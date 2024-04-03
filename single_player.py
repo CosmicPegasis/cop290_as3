@@ -1,6 +1,7 @@
 from menu import Menu
 import main_menu
 import pitch_results
+import pitch
 import practice
 import songs
 import pygame
@@ -19,31 +20,25 @@ class SinglePlayer(Menu):
         self.asset_man.load_sound("info_menu", "assets/menu/info_menu.mp3")
         self.asset_man.load_sound("count_down","assets/count_down.mp3")
         self.info_sound_playing = False
+        self.score =0
 
     def update(self):
         pass
 
-    # TODO Pause background music
+    # TODO Pause background music (Done)
     def handle_selection(self, selected_option):
         if selected_option ==0:
             self.play_info_sound()
         elif selected_option == 1:
-            print("Starting a new pitch game...")
-            print("Game has been finished.")
-            print("------------------------")
-            self.play_sound("count_down")
-            # TODO fix time delay
-            time.sleep(4)
-            game.game_funct("assets/midi/happy_birthday.mid", 4)
+            
             self.switch_screen = True
-            self.new_screen = pitch_results.PitchResultMenu()
+            self.new_screen = pitch.Pitch()
+            pygame.mixer.music.pause()
         elif selected_option == 2:
             self.switch_screen = True
             self.new_screen = songs.Songs()
         elif selected_option == 3:
-            print("Starting a new practice game...")
-            print("Game has been finished.")
-            print("------------------------")
+            
             self.switch_screen = True
             self.new_screen = practice.Practice()
         else:
