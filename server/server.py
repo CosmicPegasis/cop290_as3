@@ -1,10 +1,10 @@
 import socket
 from _thread import *
 import pickle
-from server.game_status import GameStatus
+from game_status import GameStatus
 
 if __name__ == "__main__":
-    server = "192.168.105.248"
+    server = "localhost"
     port = 5555
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -14,7 +14,7 @@ if __name__ == "__main__":
     except socket.error as e:
         print(str(e))
 
-    s.listen(2)
+    s.listen()
     print("Waiting for a connection, Server Started")
 
     connected = set()
