@@ -14,7 +14,9 @@ class MidiGame:
         self.clock = pygame.time.Clock()
         self.midi_narrator = midi_play.MidiNarrator(self.midi_file, note_length)
         self.note_length = note_length
-
+        
+       
+        
         pygame.midi.init()
         self.input_id = pygame.midi.get_default_input_id()
         if self.input_id == -1:
@@ -37,6 +39,7 @@ class MidiGame:
         self.midi_narrator.play()
 
     def handle_events(self):
+        
         if self.midi_input.poll():
             midi_events = self.midi_input.read(10)
             midi_evs = pygame.midi.midis2events(midi_events, self.midi_input.device_id)
@@ -53,24 +56,26 @@ class MidiGame:
 
     # TODO Fix midi
     def stop(self):
+        pygame.mixer.music.pause()
         self.midi_narrator.stop_playback()
         reference = get_midi_file_events(self.midi_file)
+        pygame.midi.quit()
         return calc_score(self.cur_events, reference, self.note_length)
 
 # TODO Do not use game_funct
-def game_funct(song_name,speed):
-    game = MidiGame(song_name, speed)  
+# def game_funct(song_name,speed):
+#     game = MidiGame(song_name, speed)  
     
-    game.start()
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event == pygame.QUIT:
-                running = False
-        game.handle_events() 
-        if not game.is_running():
-            print(game.stop())
-            running = False
+#     game.start()
+#     running = True
+#     while running:
+#         for event in pygame.event.get():
+#             if event == pygame.QUIT:
+#                 running = False
+#         game.handle_events() 
+#         if not game.is_running():
+#             print(game.stop())
+#             running = False
             
 
 if __name__ == "__main__":
