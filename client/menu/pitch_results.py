@@ -3,7 +3,13 @@ import client.menu.single_player as single_player
 import pygame
 import client.games.learn_pitch as learn_pitch
 import time
-from client.constants import BLACK, WHITE, WINDOW_HEIGHT, WINDOW_WIDTH, SELECTED_COLOR
+from client.utils.constants import (
+    BLACK,
+    WHITE,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+    SELECTED_COLOR,
+)
 
 
 class PitchResultMenu(Menu):

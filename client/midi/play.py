@@ -1,6 +1,6 @@
 import mido
 import time
-from client.voice_notes import VoiceNote
+from client.midi.voice_notes import VoiceNote
 import threading
 
 

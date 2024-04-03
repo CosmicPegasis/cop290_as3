@@ -1,6 +1,6 @@
 import pygame
-from client.asset_manager import AssetManager
-from client.constants import BLACK
+from client.utils.asset_manager import AssetManager
+from client.utils.constants import BLACK
 
 
 class Screen:

@@ -1,6 +1,12 @@
 from client.menu.menu import Menu
 import client.menu.versus as versus
-from client.constants import BLACK, WHITE, WINDOW_HEIGHT, WINDOW_WIDTH, SELECTED_COLOR
+from client.utils.constants import (
+    BLACK,
+    WHITE,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+    SELECTED_COLOR,
+)
 import pygame
 
 

@@ -1,9 +1,9 @@
 import pygame
 from client.menu.home import Home
-from client.constants import WINDOW_HEIGHT, WINDOW_WIDTH
+from client.utils.constants import WINDOW_HEIGHT, WINDOW_WIDTH
 import time
 import client.menu.pitch_results as pitch_results
-from client.network import Network
+from client.utils.network import Network
 import pickle
 import client.menu.multiplayer_game as multiplayer_game
 

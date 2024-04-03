@@ -1,8 +1,8 @@
 import pygame
 import pygame.midi
-from client.midi_play import get_midi_file_events
-from client.score import calc_score
-import client.midi_play as midi_play
+from client.midi.play import get_midi_file_events
+from client.utils.score import calc_score
+import client.midi.play as play
 
 
 # TODO [Aviral] Add KBD Support
@@ -29,11 +29,11 @@ class MidiGame:
 
         self.midi_output = pygame.midi.Output(self.output_id)
         if narrate_pitch:
-            self.midi_narrator = midi_play.MidiNarrator(
+            self.midi_narrator = play.MidiNarrator(
                 self.midi_file, note_length, midi_out=self.midi_output
             )
         else:
-            self.midi_narrator = midi_play.MidiNarrator(self.midi_file, note_length)
+            self.midi_narrator = play.MidiNarrator(self.midi_file, note_length)
 
     def is_running(self):
         return self.midi_narrator.is_playing()

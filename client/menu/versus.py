@@ -1,6 +1,6 @@
 from client.menu.menu import Menu
 import client.menu.main_menu as main_menu
-import client.waiting as waiting
+import client.menu.waiting as waiting
 import pygame
 
 

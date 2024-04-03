@@ -2,7 +2,13 @@ from client.menu.menu import Menu
 import client.menu.single_player as single_player
 import client.games.base_game as base_game
 import pygame
-from client.constants import BLACK, WHITE, WINDOW_HEIGHT, WINDOW_WIDTH, SELECTED_COLOR
+from client.utils.constants import (
+    BLACK,
+    WHITE,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+    SELECTED_COLOR,
+)
 
 
 class MultiGame(Menu):

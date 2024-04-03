@@ -4,7 +4,13 @@ import client.games.base_game as base_game
 import pygame
 import client.menu.pitch_results as pitch_results
 import time
-from client.constants import BLACK, WHITE, WINDOW_HEIGHT, WINDOW_WIDTH, SELECTED_COLOR
+from client.utils.constants import (
+    BLACK,
+    WHITE,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+    SELECTED_COLOR,
+)
 
 
 class LearnPitch(Menu):
