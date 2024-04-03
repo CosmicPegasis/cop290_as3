@@ -1,8 +1,8 @@
-from menu import Menu
-import main_menu
-import room
-import waiting
+from client.menu.menu import Menu
+import client.menu.main_menu as main_menu
+import client.waiting as waiting
 import pygame
+
 
 class Versus(Menu):
     def __init__(self):

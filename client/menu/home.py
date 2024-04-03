@@ -1,13 +1,15 @@
-from menu import Menu
-import main_menu
+from client.menu.menu import Menu
+import client.menu.main_menu as main_menu
 import pygame
+
+
 class Home(Menu):
     def __init__(self):
         super().__init__("assets/menu/background.mp3")
         self.OPTIONS = ["Play", "Exit"]
         self.asset_man.load_sound("play", "assets/home/play.mp3")
         self.asset_man.load_sound("exit", "assets/menu/exit.mp3")
-        self.asset_man.load_sound("info","assets/home/info.mp3")
+        self.asset_man.load_sound("info", "assets/home/info.mp3")
         self.play_sound("info")
 
     def update(self):
@@ -21,7 +23,7 @@ class Home(Menu):
             return False
 
         return True
-    
+
     def handle_events(self, events) -> bool:
         for event in events:
             if event.type == pygame.KEYDOWN:

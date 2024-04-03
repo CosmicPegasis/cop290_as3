@@ -1,10 +1,11 @@
-from menu import Menu
-import single_player
+from client.menu.menu import Menu
+import client.menu.single_player as single_player
+
 
 class Practice(Menu):
     def __init__(self):
         super().__init__("assets/versus/background.mp3")
-        self.OPTIONS = ["Play Again","Back"]
+        self.OPTIONS = ["Play Again", "Back"]
 
         self.asset_man.load_sound("play_again", "assets/pitch/play_again.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")

@@ -1,6 +1,6 @@
-from screen import Screen
+from client.menu.screen import Screen
 import pygame
-from constants import BLACK, WHITE, WINDOW_HEIGHT, WINDOW_WIDTH, SELECTED_COLOR
+from client.constants import BLACK, WHITE, WINDOW_HEIGHT, WINDOW_WIDTH, SELECTED_COLOR
 
 
 class Menu(Screen):

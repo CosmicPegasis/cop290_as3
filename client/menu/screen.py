@@ -1,6 +1,6 @@
 import pygame
-from asset_manager import AssetManager
-from constants import BLACK
+from client.asset_manager import AssetManager
+from client.constants import BLACK
 
 
 class Screen:
@@ -10,7 +10,6 @@ class Screen:
         self.asset_man = AssetManager()
         self.asset_man.load_bg_music(bg_music)
         self.game_type = None
-        
 
     def update(self) -> None:
         pass
