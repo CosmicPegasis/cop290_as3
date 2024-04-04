@@ -34,9 +34,8 @@ class MidiGame:
         )
         self.output_id = 0
         for i in range(pygame.midi.get_count()):
-            if pygame.midi.get_device_info(i)[1] == b"Microsoft GS Wavetable Synth":
+            if pygame.midi.get_device_info(i)[1] == b"Microsoft MIDI Mapper":
                 self.output_id = i
-
         self.midi_output = pygame.midi.Output(self.output_id)
         print(
             f"MIDI Output: {pygame.midi.get_device_info(self.output_id)[1].decode('ascii')}"
