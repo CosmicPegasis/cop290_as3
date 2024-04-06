@@ -1,5 +1,4 @@
 from client.menu.menu import Menu
-import client.menu.single_player as single_player
 import client.games.base_game as base_game
 import pygame
 import client.menu.pitch_results as pitch_results
@@ -11,28 +10,34 @@ from client.utils.constants import (
     WINDOW_WIDTH,
     SELECTED_COLOR,
 )
+import client.menu.parameter_learn_pitch as parameter_learn_pitch
 
 
 class LearnPitch(Menu):
-    def __init__(self):
+    def __init__(self,narrate_name,narrate_pitch,note_length):
         super().__init__("assets/single/background.mp3")
-        self.OPTIONS = ["Back"]
+        self.OPTIONS = ["Back","Halt"]
         self.flag = 0
 
         self.asset_man.load_sound("back", "assets/back.mp3")
 
-        self.game_screen = base_game.BaseGame(
-            "assets/midi/learn_pitch.mid", 1, narrate_name=True, narrate_pitch=True
+        self.game_screen = base_game.MidiGame(
+            "assets/midi/learn_pitch.mid", note_length, narrate_pitch, narrate_name
         )
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
 
         self.asset_man.load_sound("3", "assets/numbers/3.mp3")
         self.asset_man.load_sound("2", "assets/numbers/2.mp3")
         self.asset_man.load_sound("1", "assets/numbers/1.mp3")
+        self.asset_man.load_sound("halt", "assets/multiplayer_game/halt.mp3")
         self.asset_man.load_sound(
             "the_game_starts_in", "assets/numbers/the_game_starts_in.mp3"
         )
         self.game_type = "pitch"
+        self.halt_flag = 0
+        self.narrate_name = narrate_name
+        self.narrate_pitch = narrate_pitch
+        self.note_length = note_length
 
     def start_game(self):
         if self.flag == 0:
@@ -45,7 +50,6 @@ class LearnPitch(Menu):
             self.play_sound("1")
             time.sleep(1)
             self.flag = 1
-
             self.game_screen.start()
 
     def update(self):
@@ -55,8 +59,15 @@ class LearnPitch(Menu):
         if selected_option == 0:
             self.game_screen.stop()
             self.switch_screen = True
-            self.new_screen = single_player.SinglePlayer()
-
+            self.new_screen = parameter_learn_pitch.Parameters(self.narrate_name,self.narrate_pitch,self.note_length,-1)
+        elif selected_option == 1:
+            score = self.game_screen.stop()
+            self.switch_screen = True
+            self.new_screen = pitch_results.PitchResultMenu(score,
+                                                            self.narrate_name,
+                                                            self.narrate_pitch,
+                                                            self.note_length)
+            
         return True
 
     def render(self, window):
