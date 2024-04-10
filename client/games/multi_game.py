@@ -8,25 +8,44 @@ from client.utils.constants import (
     WINDOW_WIDTH,
     SELECTED_COLOR,
 )
-
+import time
+import random
 
 class MultiGame(Menu):
-    def __init__(self, p):
+    def __init__(self, p,song_number):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = []
         self.flag = 0
 
-        self.game_screen = base_game.MidiGame("assets/midi/happy_birthday.mid", 4)
+        
         self.asset_man.load_sound("halt", "assets/multiplayer_game/halt.mp3")
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.player_id = p
-
+        self.song_list = ["happy_birthday.mid","twinkle.mid"]
+        self.song = self.song_list[song_number]
+        print(self.song)
+        self.game_screen = base_game.MidiGame("assets/midi/"+self.song,1,True,False)
+        self.asset_man.load_sound(
+            "the_game_starts_in", "assets/numbers/the_game_starts_in.mp3"
+        )
+        self.asset_man.load_sound("3", "assets/numbers/3.mp3")
+        self.asset_man.load_sound("2", "assets/numbers/2.mp3")
+        self.asset_man.load_sound("1", "assets/numbers/1.mp3")
         self.game_type = "versus_act_mult_game"
         self.score = 0
         self.halt_flag =0 
 
     def start_game(self):
         if self.flag == 0:
+            self.play_sound("the_game_starts_in")
+            time.sleep(1)
+            self.play_sound("3")
+            time.sleep(1)
+            self.play_sound("2")
+            time.sleep(1)
+            self.play_sound("1")
+            time.sleep(1)
+            self.flag = 1
             self.game_screen.start()
             self.flag = 1
 

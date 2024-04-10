@@ -4,9 +4,9 @@ from client.utils.constants import WINDOW_HEIGHT, WINDOW_WIDTH
 import time
 import client.menu.pitch_results as pitch_results
 from client.utils.network import Network
-import client.menu.multiplayer_game as multiplayer_game
+import client.menu.multiplayer_game_result as multiplayer_game_result
 import client.games.multi_game as multi_game
-import client.menu.multiplayer_game as multiplayer_game
+import client.menu.multiplayer_game_result as multiplayer_game_result
 import client.games.practice_results as practice_results
 import client.menu.songs_results as songs_results
 
@@ -135,12 +135,12 @@ while running:
                 # player = int(n.getP())
                 # game = n.send("get")
                 score_mid1 = cur_screen.game_screen.stop()
-                cur_screen.new_screen = multiplayer_game.MultiGameResults(str(score_mid1),str(score_mid2),player)
+                cur_screen.new_screen = multiplayer_game_result.MultiGameResults(str(score_mid1),str(score_mid2),player)
                 cur_screen = cur_screen.new_screen
                 var =0
             
             if halt == 1:
-                cur_screen.new_screen = multiplayer_game.MultiGameResults(str(score_mid1),str(score_mid2),player)
+                cur_screen.new_screen = multiplayer_game_result.MultiGameResults(str(score_mid1),str(score_mid2),player)
                 cur_screen = cur_screen.new_screen
                 var =0
                 halt =0
@@ -148,7 +148,10 @@ while running:
         if cur_screen.game_type == "versus_waiting":
             if game.connected():
                 print("both connected to server successfully")
-                cur_screen.new_screen = multi_game.MultiGame(int(player))
+                cur_screen.asset_man.sounds["waiting"].stop()
+                cur_screen.play_sound("connected")
+                time.sleep(2)
+                cur_screen.new_screen = multi_game.MultiGame(int(player),game.song_number)
                 pygame.mixer.music.pause()
                 cur_screen = cur_screen.new_screen
                 print("both connected to server successfully-2")
@@ -160,7 +163,7 @@ while running:
             # redrawWindow(win, game, player) no need as there is already draw function
                 move1 = game.get_player_move(0)
                 move2 = game.get_player_move(1)
-                cur_screen.new_screen = multiplayer_game.MultiGameResults(
+                cur_screen.new_screen = multiplayer_game_result.MultiGameResults(
                     move1, move2, player
                 )
                 cur_screen = cur_screen.new_screen

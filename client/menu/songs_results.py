@@ -1,7 +1,7 @@
 from client.menu.menu import Menu
 import client.menu.single_player as single_player
 import pygame
-import client.games.learn_pitch as learn_pitch
+import client.games.practice_game as practice_pitch
 import time
 from client.utils.constants import (
     BLACK,
@@ -10,14 +10,17 @@ from client.utils.constants import (
     WINDOW_WIDTH,
     SELECTED_COLOR,
 )
-import client.menu.parameter_learn_pitch as parameter_learn_pitch
+import client.menu.practice_para as parameter_parameter_pitch
+import client.games.songs_game as songs_game
+import client.menu.songs_parameter as songs_parameter
 
 
-class PitchResultMenu(Menu):
-    def __init__(self, score,narrate_name,narrate_pitch,note_length):
+class SongsResults(Menu):
+    def __init__(self,song, score,narrate_name,narrate_pitch,note_length):
         super().__init__("assets/single/background.mp3")
         self.OPTIONS = ["Info", "Play Again", "Back"]
         pygame.mixer.music.pause()
+        self.song = song
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.asset_man.load_sound("info", "assets/info.mp3")
         self.asset_man.load_sound("play_again", "assets/pitch/play_again.mp3")
@@ -36,11 +39,11 @@ class PitchResultMenu(Menu):
         elif selected_option == 1:
             self.switch_screen = True
 
-            self.new_screen = learn_pitch.LearnPitch(self.narrate_name,self.narrate_pitch,self.note_length)
+            self.new_screen = songs_game.SongsGame(self.song,self.narrate_name,self.narrate_pitch,self.note_length)
             pygame.mixer.music.pause()
         elif selected_option == 2:
             self.switch_screen = True
-            self.new_screen = parameter_learn_pitch.Parameters(self.narrate_name,self.narrate_pitch,self.note_length,-1)
+            self.new_screen = songs_parameter.SongsParameters(self.song,self.narrate_name,self.narrate_pitch,self.note_length,-1)
 
         return True
 

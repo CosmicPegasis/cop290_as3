@@ -1,3 +1,5 @@
+import random
+
 class GameStatus:
     def __init__(self, id):
         self.p1Went = (
@@ -10,7 +12,8 @@ class GameStatus:
         self.wins = [0, 0]
         self.ties = 0
         self.restart = False
-
+        self.song_number = random.randint(0,1)
+        
     def get_player_move(self, p):
         return self.moves[p]
 

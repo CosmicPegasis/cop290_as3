@@ -2,10 +2,12 @@ from client.menu.menu import Menu
 import client.menu.main_menu as main_menu
 import client.menu.pitch_results as pitch_results
 import client.games.learn_pitch as learn_pitch
-import client.games.practice_pitch as practice_pitch
-import client.menu.songs as songs
+import client.games.practice_results as practice_results
+import client.menu.songs_menu as songs_menu
 import pygame
 import client.games.base_game as base_game
+import client.menu.parameter_learn_pitch as parameter_learn_pitch
+import client.menu.practice_para as parameter_practice_pitch
 import time
 
 
@@ -31,17 +33,17 @@ class SinglePlayer(Menu):
         if selected_option == 0:
             self.play_info_sound()
         elif selected_option == 1:
-
+            
             self.switch_screen = True
-            self.new_screen = learn_pitch.LearnPitch()
-            pygame.mixer.music.pause()
+            self.new_screen = parameter_learn_pitch.Parameters(True,True,1,-1)
+            
         elif selected_option == 2:
             self.switch_screen = True
-            self.new_screen = songs.Songs()
+            self.new_screen = songs_menu.SongsMenu()
         elif selected_option == 3:
-
+            
             self.switch_screen = True
-            self.new_screen = practice_pitch.PracticePitch()
+            self.new_screen = parameter_practice_pitch.Parameters_practice(True,True,1,-1)
         else:
             self.switch_screen = True
             self.new_screen = main_menu.MainMenu()

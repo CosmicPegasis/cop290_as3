@@ -1,5 +1,7 @@
 from client.menu.menu import Menu
 import client.menu.versus as versus
+import client.menu.waiting as waiting
+
 from client.utils.constants import (
     BLACK,
     WHITE,
@@ -13,12 +15,10 @@ import pygame
 class MultiGameResults(Menu):
     def __init__(self, move1, move2, player_id):
         super().__init__("assets/versus/background.mp3")
-        self.OPTIONS = ["Play Again", "Change Opponent", "Back"]
+        self.OPTIONS = ["Play Again", "Back"]
 
         self.asset_man.load_sound("play_again", "assets/pitch/play_again.mp3")
-        self.asset_man.load_sound(
-            "change_opponent", "assets/multiplayer_game/change_opponent.mp3"
-        )
+        
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.move1 = move1
         self.move2 = move2
@@ -29,10 +29,9 @@ class MultiGameResults(Menu):
 
     def handle_selection(self, selected_option):
         if selected_option == 0:
-            pass
-        elif selected_option == 1:
             self.switch_screen = True
-            # TODO Add change opponent functionality (To be done in client-server system)
+            self.new_screen = waiting.Waiting()
+            pygame.mixer.music.pause()
         else:
             self.switch_screen = True
             self.new_screen = versus.Versus()
