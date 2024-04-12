@@ -60,6 +60,7 @@ class MidiGame:
             for event in midi_evs:
                 if event.type == pygame.midi.MIDIIN:
                     note, velocity = event.data1, event.data2
+                    # TODO fix midi codes
                     note_on = True if event.status // 16 == 8 else False
                     note_off = True if event.status // 16 == 9 else False
                     if note_on:
@@ -75,8 +76,11 @@ class MidiGame:
         pygame.mixer.music.pause()
         self.midi_narrator.stop_playback()
         reference = get_midi_file_events(self.midi_source)
-        return calc_score(self.cur_events, reference, self.note_length)
-
+        print(self.cur_events)
+        
+        temp = calc_score(self.cur_events, reference, self.note_length)
+        print(temp)
+        return temp
 
 if __name__ == "__main__":
     pygame.init()

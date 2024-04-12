@@ -1,6 +1,6 @@
 from client.menu.menu import Menu
-import client.menu.versus as versus
-import client.menu.waiting as waiting
+import client.menu.battle_mode as battle
+import client.menu.waiting_battle as waiting
 
 from client.utils.constants import (
     BLACK,
@@ -12,7 +12,7 @@ from client.utils.constants import (
 import pygame
 
 
-class MultiGameResults(Menu):
+class BattleResults(Menu):
     def __init__(self, move1, move2, player_id):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = ["Play Again", "Back"]
@@ -30,18 +30,18 @@ class MultiGameResults(Menu):
     def handle_selection(self, selected_option):
         if selected_option == 0:
             self.switch_screen = True
-            self.new_screen = waiting.Waiting()
+            self.new_screen = waiting.Waiting_Battle()
             pygame.mixer.music.pause()
         else:
             self.switch_screen = True
-            self.new_screen = versus.Versus()
+            self.new_screen = battle.Battle()
         return True
 
     def render(self, window):
         window.fill(BLACK)
 
         score_font = pygame.font.Font(None, 48)
-        if self.player_id == "0":
+        if self.player_id == 0:
             score_text = score_font.render(
                 "You are Player "
                 + str(self.player_id)
@@ -62,7 +62,7 @@ class MultiGameResults(Menu):
                 + str(self.move1),
                 True,
                 WHITE,
-            ) 
+            )
         score_text_rect = score_text.get_rect()
         score_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
         window.blit(score_text, score_text_rect)

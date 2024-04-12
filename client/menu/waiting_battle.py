@@ -1,6 +1,5 @@
 from client.menu.menu import Menu
-import client.menu.main_menu as main_menu
-import client.menu.versus as versus
+import client.menu.battle_mode as battle
 from client.utils.constants import (
     BLACK,
     WHITE,
@@ -11,7 +10,7 @@ from client.utils.constants import (
 import pygame
 
 
-class Waiting(Menu):
+class Waiting_Battle(Menu):
     def __init__(self):
         self.helper()
         super().__init__("assets/versus/background.mp3")
@@ -20,7 +19,7 @@ class Waiting(Menu):
         self.asset_man.load_sound("waiting","assets/versus/waiting.mp3")
         self.asset_man.load_sound("connected","assets/versus/connected.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
-        self.game_type = "versus_waiting"
+        self.game_type = "battle_waiting"
         
         self.play_sound("waiting")
         print(self.game_type)
@@ -30,12 +29,12 @@ class Waiting(Menu):
 
     def helper(self):
 
-        self.game_type = "versus_waiting"
+        self.game_type = "battle_waiting"
 
     def handle_selection(self, selected_option):
         if selected_option ==0:
             self.switch_screen = True
-            self.new_screen = versus.Versus()
+            self.new_screen = battle.Battle()
         return True
 
     def render(self, window):

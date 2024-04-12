@@ -3,16 +3,17 @@ import client.menu.versus as versus
 import client.menu.single_player as single_player
 import client.menu.home as home
 import pygame
-
+import client.menu.battle_mode as battle
 
 class MainMenu(Menu):
     def __init__(self):
         super().__init__("assets/menu/background.mp3")
-        self.OPTIONS = ["Info", "Single Player", "Versus Mode", "Back"]
+        self.OPTIONS = ["Info", "Single Player", "Versus Mode","Battle Mode", "Back"]
 
         self.asset_man.load_sound("info", "assets/info.mp3")
         self.asset_man.load_sound("single_player", "assets/menu/single_player.mp3")
         self.asset_man.load_sound("versus_mode", "assets/menu/versus_mode.mp3")
+        self.asset_man.load_sound("battle_mode","assets/menu/battle_mode.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.asset_man.load_sound("info_menu", "assets/menu/info_menu.mp3")
         self.info_sound_playing = False
@@ -31,6 +32,9 @@ class MainMenu(Menu):
             self.switch_screen = True
             self.new_screen = versus.Versus()
         elif selected_option == 3:
+            self.switch_screen = True
+            self.new_screen = battle.Battle()
+        elif selected_option == 4:
             self.switch_screen = True
             self.new_screen = home.Home()
 

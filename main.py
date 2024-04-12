@@ -9,6 +9,11 @@ import client.games.multi_game as multi_game
 import client.menu.multiplayer_game_result as multiplayer_game_result
 import client.games.practice_results as practice_results
 import client.menu.songs_results as songs_results
+import client.games.battle_game_play as battle_play
+import client.menu.battle_game_results as battle_game_results
+import client.games.battle_game_listen as battle_listen
+import socket
+import pickle
 
 pygame.init()
 
@@ -25,6 +30,7 @@ player = 0
 halt =0
 var = 0
 debugger = 0
+debugger2 =0
 while running:
 
     running = cur_screen.handle_events(pygame.event.get())
@@ -52,7 +58,7 @@ while running:
             cur_screen.load_score(score)
             pygame.mixer.music.unpause()
 
-    # print(cur_screen.game_type)
+    
     if cur_screen.game_type == "practice":
         if cur_screen.flag == 0:
             cur_screen.start_game()
@@ -82,35 +88,30 @@ while running:
             time.sleep(2)
             cur_screen.load_score(score)
             pygame.mixer.music.unpause()
-
+#3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
     if (cur_screen.game_type != None) and (cur_screen.game_type[:6] == "versus"):
-        # print("hello")
-
         try:
             if var == 0:
                 clock = pygame.time.Clock()
-                n = Network()
+                n = Network(0)
+                n.send("0")
                 player = int(n.getP())  # This player is me.
-                print("player : ", n.getP())
+                # print("player : ", n.getP())
                 var = 1
-
             
             game = n.send("get")
-            # print("got game")
+            
         except:
-            # run = False
             print("Could not game. This means client is not connected to server")
             break
         
         if cur_screen.game_type == "versus_act_mult_game":
             score_mid1 =0
-            score_mid2 =0
+            score_mid2 =0     # This is disconnection logic
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     score_mid2 = cur_screen.game_screen.stop()
-                    
                     n.send("DISCONNECTED")
-                    
                     pygame.quit()
                 elif event.type == pygame.KEYDOWN:
                     print("entered stop")
@@ -118,22 +119,9 @@ while running:
                     print("game stopped")
                     halt =1
                     n.send("DISCONNECTED")
-                    # cur_screen.new_screen = multiplayer_game.MultiGameResults(str(score_mid1),str(score_mid2),player)
-                    # cur_screen = cur_screen.new_screen
-                    # var =0
-                    
-            # if cur_screen.halt_flag == 1:
-            #     cur_screen.game_screen.stop()
-            #     n.send("DISCONNECTED")
-            #     cur_screen.new_screen = multiplayer_game.MultiGameResults(str(score_mid1),str(score_mid2),player)
-            #     cur_screen = cur_screen.new_screen
-            #     var =0
                     
             if game == None:
                 print("One halted")
-                # n = Network()
-                # player = int(n.getP())
-                # game = n.send("get")
                 score_mid1 = cur_screen.game_screen.stop()
                 cur_screen.new_screen = multiplayer_game_result.MultiGameResults(str(score_mid1),str(score_mid2),player)
                 cur_screen = cur_screen.new_screen
@@ -143,10 +131,17 @@ while running:
                 cur_screen.new_screen = multiplayer_game_result.MultiGameResults(str(score_mid1),str(score_mid2),player)
                 cur_screen = cur_screen.new_screen
                 var =0
-                halt =0
-
+                halt =0      
+            #3333333333333333333333333333333333333333333333333333333333333
         if cur_screen.game_type == "versus_waiting":
             if game.connected():
+                
+                if game.conn1 == n.client_number:
+                    player =0
+                else:
+                    player =1
+                
+                print("player: ",player)
                 print("both connected to server successfully")
                 cur_screen.asset_man.sounds["waiting"].stop()
                 cur_screen.play_sound("connected")
@@ -160,7 +155,6 @@ while running:
         if (cur_screen.game_type != None) and (cur_screen.game_type[:6] == "versus"):    
             if game.bothWent():
                 print("BothWent")
-            # redrawWindow(win, game, player) no need as there is already draw function
                 move1 = game.get_player_move(0)
                 move2 = game.get_player_move(1)
                 cur_screen.new_screen = multiplayer_game_result.MultiGameResults(
@@ -174,29 +168,187 @@ while running:
 
                     if cur_screen.flag == 0:
                         cur_screen.start_game()
-                    # debugger =1
                     if cur_screen.game_screen.is_running():
                         cur_screen.game_screen.handle_events()
 
                     if player == 0:
-
                         if not game.p1Went:
-                        # print("current ",debugger)
-                        # print(cur_screen.game_screen.is_running())
                             if not cur_screen.game_screen.is_running():
                                 score = cur_screen.game_screen.stop()
                                 n.send(str(score))
                                 print("Score sent :", score)
                     else:
-
-                        if not game.p2Went:
-                        # print("current ",debugger)
-                        # print(cur_screen.game_screen.is_running())
+                        if not game.p2Went:                  # add stopper
                             if not cur_screen.game_screen.is_running():
                                 score = cur_screen.game_screen.stop()
                                 n.send(str(score))
                                 print("Score sent :", score)
+#################################################################################################                             
+    if (cur_screen.game_type !=None) and (cur_screen.game_type[:6] == "battle"):
+        try:
+            if var == 0:
+                clock = pygame.time.Clock()
+                n = Network(1)
+                n.send("1")
+                player = int(n.getP())  # This player is me.
+                # print("player : ", n.getP())
+                var = 1
+            
+            game = n.send("get")
+            # n.send("match_players")
+            # print("game: ",game)
+            
+        except:
+            print("Could not game. This means client is not connected to server")
+            break
+        
+        if cur_screen.game_type == "battle_act_mult_game":
+            # print("recahed here")
+            score_mid1 =game.moves[0]
+            score_mid2 =game.moves[1]
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    # score_mid2 = cur_screen.game_screen.stop()
+                    n.send("DISCONNECTED")
+                    pygame.quit()
+                elif event.type == pygame.KEYDOWN:
+                    print("entered stop")
+                    # score_mid2 = cur_screen.game_screen.stop()
+                    print("game stopped")
+                    halt =1
+                    n.send("DISCONNECTED")
+                    
+            if game == None:
+                print("One halted")
+                # score_mid1 = cur_screen.game_screen.stop()
+                cur_screen.new_screen = battle_game_results.BattleResults(str(score_mid1),str(score_mid2),player)
+                cur_screen = cur_screen.new_screen
+                var =0
+            
+            if halt == 1:
+                cur_screen.new_screen = battle_game_results.BattleResults(str(score_mid1),str(score_mid2),player)
+                cur_screen = cur_screen.new_screen
+                var =0
+                halt =0
+                
+        if cur_screen.game_type == "battle_act_mult_game":
+            pygame.display.flip()
+            if cur_screen.flag == 0:
+                cur_screen.flag = 1
+                for i in range(100000):
+                    if(i==100):
+                        debugger =1
+                    print("game_playing ",str(i)+"          "+str(game.round))
+                # start playing mode here 
+                    
+        if cur_screen.game_type == "battle_waiting":
+            if game.connected():
+                
+                if game.conn1 == n.client_number:
+                    player = 0
+                else:
+                    player =1
+                
+                print("player: ",player)
+                print("both connected to server successfully")
+                cur_screen.asset_man.sounds["waiting"].stop()
+                cur_screen.play_sound("connected")
+                time.sleep(2)
+                cur_screen.new_screen = battle_play.Battle_play(int(player))
+                pygame.mixer.music.pause()
+                cur_screen = cur_screen.new_screen
+                print("both connected to server successfully-2")
+                
+        if (cur_screen.game_type != None) and (cur_screen.game_type == "battle_listen_mult_game"):
+            # print("here")
+            # print("song_array1: ",game.song_array[0])
+            # print("song_array2: ",game.song_array[1])
+            pygame.display.flip()
+            # print(cur_screen.flag)
+            if cur_screen.flag ==0:
+                cur_screen.flag = 1
+                for i in range(100000):             # Game starts for listening mode here
+                    if (i == 100):
+                        debugger2 = 1
+                    print("listening: ",str(i)+"          "+str(game.round))
+            
+        if cur_screen.game_type == "battle_act_mult_game":       
+            # print("came here")
+            if player == 0:
+                if not game.p1_ready_to_go_forward:
+                    if debugger == 1:
+                        n.send("changeinfo1")    # send array of array of playing mode to server
+            else:
+                if not game.p2_ready_to_go_forward:
+                    if debugger == 1:
+                        n.send("changeinfo2")     # send array
+        
+           
+        if (cur_screen.game_type == "battle_act_mult_game"):
+            if (game.p1_ready_to_go_forward and game.p2_ready_to_go_forward):
+                song_1 = game.song_array[1]            ## loading array from server 
+                song_2 = game.song_array[0]             ## in the listening mode
+                cur_screen.new_screen = battle_listen.Battle_listen(int(player))
+                pygame.mixer.music.pause()
+                cur_screen = cur_screen.new_screen
+                pygame.display.flip() 
+        
+                    
+        if cur_screen.game_type == "battle_listen_mult_game":       
+            if player ==0:
+                if not game.p1Went:
+                    if debugger2 == 1:
+                        n.send(str(99)) 
+            else:                          # Game stop of listening mode and sending score to the server
+                if not game.p2Went:
+                    if debugger2 == 1:
+                        n.send(str(89))        
+                    
+        if (cur_screen.game_type != None) and (cur_screen.game_type == "battle_listen_mult_game"):
+            if (game.p1Went and game.p2Went):
+                n.send("round_finished")
+                
+                if (game.round >=1):
+                    score1 = game.moves[0]
+                    score2 = game.moves[1]
+                    cur_screen.new_screen = battle_game_results.BattleResults(str(score1),str(score2),player)
+                    cur_screen = cur_screen.new_screen
+                    n.send("DISCONNECTED")
+                    var =0
+                else:
+                    cur_screen.new_screen = battle_play.Battle_play(player)
+                    pygame.mixer.music.pause()
+                    cur_screen = cur_screen.new_screen
+                    n.send("reset")
+                    debugger =0
+                    debugger2 =0
+                    
+        
+                    
+            
+                
+                
+        
+                
+        
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     pygame.display.flip()
 
 pygame.quit()

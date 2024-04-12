@@ -1,10 +1,10 @@
 from client.menu.menu import Menu
 import client.menu.main_menu as main_menu
-import client.menu.waiting as waiting
+import client.menu.waiting_battle as waiting
 import pygame
 
 
-class Versus(Menu):
+class Battle(Menu):
     def __init__(self):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = ["Find Match", "Back"]
@@ -18,9 +18,9 @@ class Versus(Menu):
     def handle_selection(self, selected_option):
         if selected_option == 0:
             self.switch_screen = True
-            self.new_screen = waiting.Waiting()
+            self.new_screen = waiting.Waiting_Battle()
             pygame.mixer.music.pause()
-        elif selected_option == 1:
+        if selected_option == 1:
             self.switch_screen = True
             self.new_screen = main_menu.MainMenu()
         return True
