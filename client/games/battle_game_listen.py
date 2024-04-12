@@ -12,12 +12,15 @@ import time
 
 
 class Battle_listen(Menu):
-    def __init__(self, p):
+    def __init__(self, p, song_arr):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = []
         self.flag = 0
 
         self.game_type = "battle_listen"
+        self.game_screen = base_game.MidiGame(
+            song_arr, note_length=4, narrate_name=False, narrate_pitch=True
+        )
         self.asset_man.load_sound("halt", "assets/multiplayer_game/halt.mp3")
         # self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.player_id = p
@@ -33,7 +36,7 @@ class Battle_listen(Menu):
         # self.asset_man.load_sound("1", "assets/numbers/1.mp3")
         self.game_type = "battle_listen_mult_game"
         self.score = 0
-        self.halt_flag =0 
+        self.halt_flag = 0
 
     def start_game(self):
         if self.flag == 0:
@@ -46,26 +49,28 @@ class Battle_listen(Menu):
             # self.play_sound("1")
             # time.sleep(1)
             # self.flag = 1
-            # self.game_screen.start()
-            # self.flag = 1
+            self.game_screen.start()
+            self.flag = 1
 
     def update(self):
         pass
 
     def handle_selection(self, selected_option):
         if selected_option == 0:
-            self.halt_flag =1
+            self.halt_flag = 1
         return True
 
     def render(self, window):
         window.fill(BLACK)
         score_font = pygame.font.Font(None, 48)
 
-        score_text = score_font.render("Listening_mode" + str(self.player_id), True, WHITE)
+        score_text = score_font.render(
+            "Listening_mode" + str(self.player_id), True, WHITE
+        )
 
         score_text_rect = score_text.get_rect()
         score_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
-        window.blit(score_text, score_text_rect)     
+        window.blit(score_text, score_text_rect)
         text = self.font.render("Press 'Enter' to end the game", True, WHITE)
         text_rect = text.get_rect()
         text_rect.midtop = (

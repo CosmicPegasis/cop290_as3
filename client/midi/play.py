@@ -71,16 +71,25 @@ class MidiFileNarrator(MidiNarrator):
 
 class MidiEventNarrator(MidiNarrator):
     def __init__(
-        self, midi_arr, slow, narrate_name=True, narrate_note=False, midi_out=None
+        self, midi_arr, slow, narrate_name=True, narrate_pitch=False, midi_out=None
     ):
-        super().__init__(slow, narrate_name, narrate_note, midi_out)
+        super().__init__(slow, narrate_name, narrate_pitch, midi_out)
         self.midi_arr = midi_arr
 
     def _play(self):
-        for note, velocity, delay in self.midi_arr:
+        delay = self.midi_arr[0][2]
+        new_arr = []
+        for elem in self.midi_arr:
+            temp = elem[2]
+            elem[2] = elem[2] - delay
+            delay = temp
+            new_arr.append(elem)
+        for event_type, note, delay in self.midi_arr:
+            time.sleep(delay / 1000)
             if not self.stop:
-                self.midi_out.note_on(note, velocity)
-                time.sleep(delay)
-                self.midi_out.note_off(note)
+                if event_type == "on":
+                    self.midi_out.note_on(note, 100)
+                elif event_type == "off":
+                    self.midi_out.note_off(note)
 
         time.sleep(0.5)

@@ -42,17 +42,27 @@ class MidiGame:
         )
 
     def initialise_narrator(self, narrate_pitch, narrate_name):
-        self.midi_narrator = play.MidiFileNarrator(
-            self.midi_source,
-            self.note_length,
-            narrate_name,
-            narrate_pitch,
-            midi_out=self.midi_output,
-        )
+        if type(self.midi_source) == str:
+            self.midi_narrator = play.MidiFileNarrator(
+                self.midi_source,
+                self.note_length,
+                narrate_name,
+                narrate_pitch,
+                midi_out=self.midi_output,
+            )
+        else:
+            self.midi_narrator = play.MidiEventNarrator(
+                self.midi_source,
+                self.note_length,
+                narrate_name,
+                narrate_pitch,
+                midi_out=self.midi_output,
+            )
 
     def start(self):
         self.midi_narrator.play()
 
+    # TODO Handle back delay error
     def handle_events(self):
         if self.midi_input.poll():
             midi_events = self.midi_input.read(10)
@@ -63,7 +73,7 @@ class MidiGame:
                     note_on = True if event.status // 16 == 9 else False
                     note_off = True if event.status // 16 == 8 else False
                     if note_on:
-                        print(voice_notes._midi_to_note(note), end=" ")
+                        # print(voice_notes._midi_to_note(note), end=" ")
                         self.midi_output.note_on(note, velocity)
                         self.cur_events.append(["on", note, event.timestamp])
                     elif note_off:
@@ -74,10 +84,12 @@ class MidiGame:
         pygame.midi.quit()
         pygame.mixer.music.pause()
         self.midi_narrator.stop_playback()
-        reference = get_midi_file_events(self.midi_source)
+        if type(self.midi_source) == str:
+            reference = get_midi_file_events(self.midi_source)
+            temp = calc_score(self.cur_events, reference, self.note_length)
+        else:
+            temp = calc_score(self.cur_events, self.midi_source, self.note_length)
         print(self.cur_events)
-
-        temp = calc_score(self.cur_events, reference, self.note_length)
         print(temp)
         return temp
 
