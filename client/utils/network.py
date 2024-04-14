@@ -4,20 +4,13 @@ import struct
 
 
 class Network:
-    def __init__(self, game_mode):
+    def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = "192.168.15.136"
-        self.game_mode = game_mode
+        self.server = "10.184.19.37"
         self.port = 5555
         self.addr = (self.server, self.port)
-        self.p = self.connect()
-        print("Reached here")
-        self.client_number = int((self.client.getsockname())[1])
-
-    def connect(self):
         self.client.connect(self.addr)
-        ans = self.recv_one_message().decode()
-        return ans  # this conatins the overall data of the game
+        self.client_number = int((self.client.getsockname())[1])
 
     def send(self, data):
         data = pickle.dumps(data)

@@ -28,7 +28,7 @@ n = 0
 player = 0
 
 halt = 0
-var = 0
+is_network_initiated = 0
 debugger = 0
 debugger2 = 0
 while running:
@@ -106,13 +106,13 @@ while running:
     # 3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
     if (cur_screen.game_type != None) and (cur_screen.game_type[:6] == "versus"):
         try:
-            if var == 0:
+            if is_network_initiated == 0:
                 clock = pygame.time.Clock()
                 n = Network(0)
                 n.send("0")
                 player = int(n.getP())  # This player is me.
                 # print("player : ", n.getP())
-                var = 1
+                is_network_initiated = 1
 
             game = n.send("get")
 
@@ -142,14 +142,14 @@ while running:
                     str(score_mid1), str(score_mid2), player
                 )
                 cur_screen = cur_screen.new_screen
-                var = 0
+                is_network_initiated = 0
 
             if halt == 1:
                 cur_screen.new_screen = multiplayer_game_result.MultiGameResults(
                     str(score_mid1), str(score_mid2), player
                 )
                 cur_screen = cur_screen.new_screen
-                var = 0
+                is_network_initiated = 0
                 halt = 0
             # 3333333333333333333333333333333333333333333333333333333333333
         if cur_screen.game_type == "versus_waiting":
@@ -181,7 +181,7 @@ while running:
                     move1, move2, player
                 )
                 cur_screen = cur_screen.new_screen
-                var = 0
+                is_network_initiated = 0
 
             else:
                 if cur_screen.game_type == "versus_act_mult_game":
@@ -206,35 +206,21 @@ while running:
     #################################################################################################
     if (cur_screen.game_type != None) and (cur_screen.game_type[:6] == "battle"):
         # try:
-        if var == 0:
+        if is_network_initiated == 0:
             clock = pygame.time.Clock()
-            n = Network(1)
+            n = Network()
             n.send("1")
-            player = int(n.getP())  # This player is me.
-            # print("player : ", n.getP())
-            var = 1
+            is_network_initiated = 1
 
         game = n.send("get")
-        # n.send("match_players")
-        # print("game: ",game)
-
-        # except:
-        #     print("Could not game. This means client is not connected to server")
-        #     break
-
         if cur_screen.game_type == "battle_act_mult_game":
-            # print("recahed here")
             score_mid1 = game.moves[0]
             score_mid2 = game.moves[1]
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    # score_mid2 = cur_screen.game_screen.stop()
                     n.send("DISCONNECTED")
                     pygame.quit()
                 elif event.type == pygame.KEYDOWN:
-                    print("entered stop")
-                    # score_mid2 = cur_screen.game_screen.stop()
-                    print("game stopped")
                     halt = 1
                     n.send("DISCONNECTED")
 
@@ -245,14 +231,14 @@ while running:
                     str(score_mid1), str(score_mid2), player
                 )
                 cur_screen = cur_screen.new_screen
-                var = 0
+                is_network_initiated = 0
 
             if halt == 1:
                 cur_screen.new_screen = battle_game_results.BattleResults(
                     str(score_mid1), str(score_mid2), player
                 )
                 cur_screen = cur_screen.new_screen
-                var = 0
+                is_network_initiated = 0
                 halt = 0
 
         if cur_screen.game_type == "battle_act_mult_game":
@@ -261,8 +247,6 @@ while running:
                 cur_screen.start_game()
             if cur_screen.listener.is_listening():
                 cur_screen.listener.handle_events()
-
-                # start playing mode here
 
         if cur_screen.game_type == "battle_waiting":
             if game.connected():
@@ -285,11 +269,7 @@ while running:
         if (cur_screen.game_type != None) and (
             cur_screen.game_type == "battle_listen_mult_game"
         ):
-            # print("here")
-            # print("song_array1: ",game.song_array[0])
-            # print("song_array2: ",game.song_array[1])
             pygame.display.flip()
-            # print(cur_screen.flag)
             if cur_screen.flag == 0:
                 cur_screen.start_game()
             if cur_screen.game_screen.is_running():
@@ -300,7 +280,6 @@ while running:
                         score = cur_screen.game_screen.stop()
                         print(score)
                         n.send(str(score))
-                        # n.send(str(99))
             else:  # Game stop of listening mode and sending score to the server
                 if not game.p2Went:
                     if not cur_screen.game_screen.is_running():
@@ -309,16 +288,13 @@ while running:
                         n.send(str(score))
 
         if cur_screen.game_type == "battle_act_mult_game":
-            # print("came here")
             if player == 0:
                 if not game.p1_ready_to_go_forward:
                     if not cur_screen.listener.is_listening():
                         arr = cur_screen.listener.stop()
                         print(arr)
                         barr = pickle.dumps(arr)
-                        n.send_bin(
-                            barr
-                        )  # send array of array of playing mode to server
+                        n.send_bin(barr)
                         print(pickle.loads(barr))
             else:
                 if not game.p2_ready_to_go_forward:
@@ -335,8 +311,6 @@ while running:
             if game.p1_ready_to_go_forward and game.p2_ready_to_go_forward:
                 song_1 = game.song_array[1]  ## loading array from server
                 song_2 = game.song_array[0]  ## in the listening mode
-                print(song_1)
-                print(song_2)
                 if player == 0:
                     cur_screen.new_screen = battle_listen.Battle_listen(
                         int(player), song_1
@@ -363,7 +337,7 @@ while running:
                     )
                     cur_screen = cur_screen.new_screen
                     n.send("DISCONNECTED")
-                    var = 0
+                    is_network_initiated = 0
                 else:
                     cur_screen.new_screen = battle_play.Battle_play(player)
                     pygame.mixer.music.pause()
