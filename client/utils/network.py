@@ -1,50 +1,53 @@
 import socket
 import pickle
+import struct
 
 
 class Network:
     def __init__(self, game_mode):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = "localhost"
+        self.server = "192.168.15.136"
         self.game_mode = game_mode
         self.port = 5555
         self.addr = (self.server, self.port)
-        # self.send(str(self.game_mode))
         self.p = self.connect()
-        # self.client.sendall(pickle.dumps(self.game_mode))
         print("Reached here")
         self.client_number = int((self.client.getsockname())[1])
 
     def connect(self):
-        try:
-            self.client.connect(self.addr)
-            # print('r')
-            ans = self.client.recv(2048).decode()
-            # print("connected successfully")
-            return ans  # this conatins the overall data of the game
-        except Exception as e:
-            print(e)
-            print("error in the connect function in network.py")
+        self.client.connect(self.addr)
+        ans = self.recv_one_message().decode()
+        return ans  # this conatins the overall data of the game
 
     def send(self, data):
-        try:
-            data = pickle.dumps(data)
-            self.client.send(data)
-            # print("sent successfully")
-            # print("reached-2")
-            # if (data == "game_mode"):
-            #     self.client.sendall(pickle.dumps((data,self.game_mode)))
-
-            ans = pickle.loads(self.client.recv(2048 * 2))
-            # print("reached-3")
-            return ans  # this sends the overall data of the game
-        except Exception as e:
-            print(e)
-        # print("error in the send function in network.py")
+        data = pickle.dumps(data)
+        self.send_one_message(data)
+        ans = pickle.loads(self.recv_one_message())
+        return ans  # this sends the overall data of the game
 
     def send_bin(self, data):
-        # bdata = pickle.dumps(data)
-        self.client.send(data)
+        print(len(data))
+        self.send_one_message(data)
+
+    def send_one_message(self, data):
+        length = len(data)
+        self.client.sendall(struct.pack("!I", length))
+        self.client.sendall(data)
+
+    def recv_one_message(self):
+        lengthbuf = self.recvall(4)
+        (length,) = struct.unpack("!I", lengthbuf)
+        return self.recvall(length)
+
+    def recvall(self, count):
+        buf = b""
+        while count:
+            newbuf = self.client.recv(count)
+            if not newbuf:
+                return None
+            buf += newbuf
+            count -= len(newbuf)
+        return buf
 
     def getP(self):
         return self.p

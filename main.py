@@ -205,22 +205,22 @@ while running:
                                 print("Score sent :", score)
     #################################################################################################
     if (cur_screen.game_type != None) and (cur_screen.game_type[:6] == "battle"):
-        try:
-            if var == 0:
-                clock = pygame.time.Clock()
-                n = Network(1)
-                n.send("1")
-                player = int(n.getP())  # This player is me.
-                # print("player : ", n.getP())
-                var = 1
+        # try:
+        if var == 0:
+            clock = pygame.time.Clock()
+            n = Network(1)
+            n.send("1")
+            player = int(n.getP())  # This player is me.
+            # print("player : ", n.getP())
+            var = 1
 
-            game = n.send("get")
-            # n.send("match_players")
-            # print("game: ",game)
+        game = n.send("get")
+        # n.send("match_players")
+        # print("game: ",game)
 
-        except:
-            print("Could not game. This means client is not connected to server")
-            break
+        # except:
+        #     print("Could not game. This means client is not connected to server")
+        #     break
 
         if cur_screen.game_type == "battle_act_mult_game":
             # print("recahed here")

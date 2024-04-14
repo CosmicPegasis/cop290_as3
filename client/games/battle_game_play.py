@@ -17,7 +17,7 @@ class Battle_play(Menu):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = []
         self.flag = 0
-        self.listener = midi_listener.MidiListener(5)
+        self.listener = midi_listener.MidiListener(15)
 
         self.asset_man.load_sound("halt", "assets/multiplayer_game/halt.mp3")
         # self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")

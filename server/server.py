@@ -4,12 +4,37 @@ import pickle
 import threading
 from game_status import GameStatus
 import time
+import struct
 
 DISCONNECT_SIGNAL = "DISCONNECTED"
 
+
+def send_one_message(sock, data):
+    length = len(data)
+    sock.sendall(struct.pack("!I", length))
+    sock.sendall(data)
+
+
+def recv_one_message(sock):
+    lengthbuf = recvall(sock, 4)
+    (length,) = struct.unpack("!I", lengthbuf)
+    return recvall(sock, length)
+
+
+def recvall(sock, count):
+    buf = b""
+    while count:
+        newbuf = sock.recv(count)
+        if not newbuf:
+            return None
+        buf += newbuf
+        count -= len(newbuf)
+    return buf
+
+
 if __name__ == "__main__":
     flag = 0
-    server = "localhost"
+    server = "192.168.15.136"
     port = 5555
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -28,22 +53,19 @@ if __name__ == "__main__":
     idCount = 0
 
     def send_disconnect_signal(conn):
-        conn.sendall(DISCONNECT_SIGNAL.encode())
+        # conn.sendall(DISCONNECT_SIGNAL.encode())
+        send_one_message(conn, DISCONNECT_SIGNAL.encode())
 
     def threaded_client(conn, p, gameId):
 
         global idCount
-        conn.send(str.encode(str(p)))
+        #  send_one_message(conn, str.encode(str(p)))
 
         reply = ""
         while True:
             try:
-                # data = conn.recv(4096).decode()
-                data = pickle.loads(conn.recv(4096))
-                print(type(data))
+                data = pickle.loads(recv_one_message(conn))
                 if type(data) == list:
-                    print("r")
-                    print(list(data))
                     game.feed(p, list(data))
                     pass
                 else:
@@ -59,6 +81,7 @@ if __name__ == "__main__":
                                 del games[gameId]
                                 print("Closing Game", gameId)
                                 idCount = idCount - 1
+                                send_one_message(conn, pickle.dumps("ok"))
                                 conn.close()
 
                             elif data == "round_finished":
@@ -70,7 +93,8 @@ if __name__ == "__main__":
                             elif data != "get" and data != "game_mode":
                                 game.play(p, data)
 
-                            conn.sendall(pickle.dumps(game))
+                            # conn.sendall(pickle.dumps(game))
+                            send_one_message(conn, pickle.dumps(game))
                     else:
                         break
             except:
@@ -92,8 +116,9 @@ if __name__ == "__main__":
         idCount = idCount + 1
         flag = 0
 
-        conn.send(str.encode(str(1)))
-        game_mode = pickle.loads(conn.recv(4096))
+        send_one_message(conn, (str.encode(str(1))))
+        game_mode = pickle.loads(recv_one_message(conn))
+        send_one_message(conn, (pickle.dumps(str(1))))
         print("game_mode: ", game_mode)
 
         # for key,value in games.items():
