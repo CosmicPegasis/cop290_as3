@@ -70,11 +70,13 @@ if __name__ == "__main__":
                             if data == "reset":
                                 game.resetWent()
                             elif data == "DISCONNECTED":
-                                del games[gameId]
-                                idCount = idCount - 1
-                                send_one_message(conn, pickle.dumps("ok"))
-                                conn.close()
-                                break
+                                if games[gameId].dc:
+                                    del games[gameId]
+                                    send_one_message(conn, pickle.dumps("ok"))
+                                    idCount = idCount - 1
+                                    conn.close()
+                                else:
+                                    games[gameId].dc = True
                             elif data == "round_finished":
                                 game.round = game.round + 0.5
                             elif data != "get" and data != "game_mode":

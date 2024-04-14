@@ -3,22 +3,16 @@ import random
 
 class GameStatus:
     def __init__(self, id):
-        self.p1Went = (
-            False  # this will be used to check if game is over for both players
-        )
+        self.p1Went = False
+        self.p2Went = False
         self.round = 0
         self.conn1 = 0
         self.conn2 = 0
-        self.p1_listened = False
-        self.p2_listened = False
-        self.p2Went = False  # That means that game.stop() has been done for player-1
-        self.ready = False  # To see if they are connected
+        self.ready = False
         self.id = id
-        self.moves = [0, 0]  # here move is an int(This is score)
-
-        self.wins = [0, 0]
+        self.moves = [0, 0]
         self.song_array = [None, None]
-        self.ties = 0
+        self.dc = False
         self.restart = False
         self.song_number = random.randint(0, 1)
         self.p1_ready_to_go_forward = False
@@ -37,8 +31,6 @@ class GameStatus:
     def play(self, player, move):
         res = self.moves[player]
         self.moves[player] = int(move) + res
-        print("res : ", res)
-        print("move: ", move)
         if player == 0:
             self.p1Went = move
         else:
@@ -54,7 +46,6 @@ class GameStatus:
             self.conn2 = conn
 
     def bothWent(self):
-        # print("reached in both went")
         return (self.p1Went) and (self.p2Went)
 
     def winner(self):
