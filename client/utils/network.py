@@ -6,17 +6,24 @@ import struct
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = "10.184.19.37"
+        self.server = "10.184.55.145"
         self.port = 5555
         self.addr = (self.server, self.port)
         self.client.connect(self.addr)
         self.client_number = int((self.client.getsockname())[1])
 
     def send(self, data):
+        temp = data
         data = pickle.dumps(data)
         self.send_one_message(data)
-        ans = pickle.loads(self.recv_one_message())
-        return ans  # this sends the overall data of the game
+        ans = None
+        if (temp != "DISCONNECTED"):
+            try:
+                ans = pickle.loads(self.recv_one_message())
+            except Exception as e:
+                print(e)
+        
+        return ans  
 
     def send_bin(self, data):
         print(len(data))
@@ -29,8 +36,11 @@ class Network:
 
     def recv_one_message(self):
         lengthbuf = self.recvall(4)
-        (length,) = struct.unpack("!I", lengthbuf)
-        return self.recvall(length)
+        if (lengthbuf):
+            (length,) = struct.unpack("!I", lengthbuf)
+            return self.recvall(length)
+        else:
+            return None
 
     def recvall(self, count):
         buf = b""

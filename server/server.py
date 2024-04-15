@@ -34,7 +34,7 @@ def recvall(sock, count):
 
 if __name__ == "__main__":
     flag = 0
-    server = "10.184.19.37"
+    server = "10.184.55.145"
     port = 5555
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -68,11 +68,12 @@ if __name__ == "__main__":
                             break
                         else:
                             if data == "reset":
+                                print("reset called")
                                 game.resetWent()
                             elif data == "DISCONNECTED":
                                 if games[gameId].dc:
                                     del games[gameId]
-                                    send_one_message(conn, pickle.dumps("ok"))
+                                    # send_one_message(conn, pickle.dumps("ok"))
                                     idCount = idCount - 1
                                     conn.close()
                                 else:

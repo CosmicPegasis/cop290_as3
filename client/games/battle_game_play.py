@@ -17,7 +17,7 @@ class Battle_play(Menu):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = []
         self.flag = 0
-        self.listener = midi_listener.MidiListener(15)
+        self.listener = midi_listener.MidiListener(20)
 
         self.asset_man.load_sound("halt", "assets/multiplayer_game/halt.mp3")
         # self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
@@ -32,14 +32,16 @@ class Battle_play(Menu):
         # self.asset_man.load_sound("3", "assets/numbers/3.mp3")
         # self.asset_man.load_sound("2", "assets/numbers/2.mp3")
         # self.asset_man.load_sound("1", "assets/numbers/1.mp3")
+        self.asset_man.load_sound("play_round_started","assets/battle/play_round_started.mp3")
         self.game_type = "battle_act_mult_game"
         self.score = 0
         self.halt_flag = 0
 
     def start_game(self):
+        print("entered here")
         if self.flag == 0:
-            # self.play_sound("the_game_starts_in")
-            # time.sleep(1)
+            self.play_sound("play_round_started")
+            time.sleep(1)
             # self.play_sound("3")
             # time.sleep(1)
             # self.play_sound("2")
@@ -48,6 +50,7 @@ class Battle_play(Menu):
             # time.sleep(1)
             self.flag = 1
             self.listener.start()
+            print("listener started")
             # self.flag = 1
 
     def update(self):

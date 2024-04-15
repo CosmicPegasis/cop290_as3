@@ -16,7 +16,8 @@ class Battle_listen(Menu):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = []
         self.flag = 0
-
+        self.asset_man.load_sound("play_to_listen","assets/battle/play_to_listen.mp3")
+        self.asset_man.load_sound("round_over","assets/battle/round_over.mp3")
         self.game_type = "battle_listen"
         self.game_screen = base_game.MidiGame(
             song_arr, note_length=4, narrate_name=False, narrate_pitch=True

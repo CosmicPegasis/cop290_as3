@@ -60,6 +60,7 @@ class LearnPitch(Menu):
             self.game_screen.stop()
             self.switch_screen = True
             self.new_screen = parameter_learn_pitch.Parameters(self.narrate_name,self.narrate_pitch,self.note_length,-1)
+            pygame.mixer.music.pause()
         elif selected_option == 1:
             score = self.game_screen.stop()
             self.switch_screen = True

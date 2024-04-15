@@ -40,7 +40,7 @@ class PracticeResults(Menu):
         elif selected_option == 2:
             self.switch_screen = True
             self.new_screen = parameter_parameter_pitch.Parameters_practice(self.narrate_name,self.narrate_pitch,self.note_length,-1)
-
+            pygame.mixer.music.pause()
         return True
 
     def load_score(self, score):

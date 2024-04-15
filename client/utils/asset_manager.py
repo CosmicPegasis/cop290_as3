@@ -22,6 +22,8 @@ class AssetManager:
         try:
             pygame.mixer.music.unload()
             pygame.mixer.music.load(path)
+            pygame.mixer.music.set_volume(0.2)
             pygame.mixer.music.play(-1)
+            
         except pygame.error:
             print(f"Unable to load music: {path}")

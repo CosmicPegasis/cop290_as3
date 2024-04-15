@@ -23,32 +23,42 @@ class SongsResults(Menu):
         self.song = song
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.asset_man.load_sound("info", "assets/info.mp3")
+        self.asset_man.load_sound("info_results", "assets/parameters/info_results.mp3")
         self.asset_man.load_sound("play_again", "assets/pitch/play_again.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.score = score
         self.narrate_name = narrate_name
         self.narrate_pitch = narrate_pitch
         self.note_length = note_length
+        self.info_sound_playing = False
 
     def update(self):
         pass
 
     def handle_selection(self, selected_option):
         if selected_option == 0:
-            print("This is info.")
+            self.play_info_sound()
         elif selected_option == 1:
             self.switch_screen = True
-
             self.new_screen = songs_game.SongsGame(self.song,self.narrate_name,self.narrate_pitch,self.note_length)
             pygame.mixer.music.pause()
         elif selected_option == 2:
             self.switch_screen = True
             self.new_screen = songs_parameter.SongsParameters(self.song,self.narrate_name,self.narrate_pitch,self.note_length,-1)
+            pygame.mixer.music.pause()
 
         return True
+    
+    def play_info_sound(self):
+        self.play_sound("info_results")
+        self.info_sound_playing = True
+
+    def stop_info_sound(self):
+        self.asset_man.sounds["info_results"].stop()
+        self.info_sound_playing = False
 
     def load_score(self, score):
-        pygame.mixer.music.pause()
+        
         str_form = str(score)
 
         for digit in str_form:

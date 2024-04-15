@@ -1,7 +1,7 @@
 from client.menu.menu import Menu
 import client.menu.single_player as single_player
 import client.menu.songs_parameter as songs_parameter
-
+import pygame
 
 class SongsMenu(Menu):
     def __init__(self):
@@ -21,6 +21,7 @@ class SongsMenu(Menu):
             self.new_screen = single_player.SinglePlayer()
         else:
             self.switch_screen = True
-            self.new_screen = songs_parameter.SongsParameters(self.OPTIONS[selected_option],True,True,1,-1)
+            self.new_screen = songs_parameter.SongsParameters(self.OPTIONS[selected_option],True,True,3,-1)
+            pygame.mixer.music.pause()
 
         return True

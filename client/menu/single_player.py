@@ -20,7 +20,7 @@ class SinglePlayer(Menu):
         self.asset_man.load_sound("songs", "assets/single/songs.mp3")
         self.asset_man.load_sound("practice", "assets/single/practice.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
-        self.asset_man.load_sound("info_menu", "assets/menu/info_menu.mp3")
+        self.asset_man.load_sound("info_single_player", "assets/single/info_single_player.mp3")
         self.asset_man.load_sound("count_down", "assets/count_down.mp3")
         self.info_sound_playing = False
         self.score = 0
@@ -35,15 +35,17 @@ class SinglePlayer(Menu):
         elif selected_option == 1:
             
             self.switch_screen = True
-            self.new_screen = parameter_learn_pitch.Parameters(True,True,1,-1)
-            
+            self.new_screen = parameter_learn_pitch.Parameters(True,True,3,-1)
+            pygame.mixer.music.pause()
         elif selected_option == 2:
             self.switch_screen = True
             self.new_screen = songs_menu.SongsMenu()
+            pygame.mixer.music.pause()
         elif selected_option == 3:
             
             self.switch_screen = True
-            self.new_screen = parameter_practice_pitch.Parameters_practice(True,True,1,-1)
+            self.new_screen = parameter_practice_pitch.Parameters_practice(True,True,3,-1)
+            pygame.mixer.music.pause()
         else:
             self.switch_screen = True
             self.new_screen = main_menu.MainMenu()
@@ -51,11 +53,11 @@ class SinglePlayer(Menu):
         return True
 
     def play_info_sound(self):
-        self.play_sound("info_menu")
+        self.play_sound("info_single_player")
         self.info_sound_playing = True
 
     def stop_info_sound(self):
-        self.asset_man.sounds["info_menu"].stop()
+        self.asset_man.sounds["info_single_player"].stop()
         self.info_sound_playing = False
 
     def handle_events(self, events) -> bool:

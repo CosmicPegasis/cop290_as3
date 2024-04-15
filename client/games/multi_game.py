@@ -22,7 +22,10 @@ class MultiGame(Menu):
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.player_id = p
         self.song_list = ["happy_birthday.mid","twinkle.mid"]
+        
         self.song = self.song_list[song_number]
+        self.asset_man.load_sound("playing_twinkle","assets/multiplayer_game/playing_twinkle.mp3")
+        self.asset_man.load_sound("playing_happy_birthday","assets/multiplayer_game/playing_happy_birthday.mp3")
         print(self.song)
         self.game_screen = base_game.MidiGame("assets/midi/"+self.song,1,True,False)
         self.asset_man.load_sound(
@@ -45,6 +48,12 @@ class MultiGame(Menu):
             time.sleep(1)
             self.play_sound("1")
             time.sleep(1)
+            if(self.song == "happy_birthday.mid"):
+                self.play_sound("playing_happy_birthday")
+                time.sleep(1.5)
+            else:
+                self.play_sound("playing_twinkle")
+                time.sleep(1)
             self.flag = 1
             self.game_screen.start()
             self.flag = 1

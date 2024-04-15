@@ -15,7 +15,7 @@ class Waiting_Battle(Menu):
         self.helper()
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = ["Back"]
-        
+        self.asset_man.load_sound("server_is_down","assets/server_is_down.mp3")
         self.asset_man.load_sound("waiting","assets/versus/waiting.mp3")
         self.asset_man.load_sound("connected","assets/versus/connected.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")

@@ -5,6 +5,7 @@ class GameStatus:
     def __init__(self, id):
         self.p1Went = False
         self.p2Went = False
+        self.get_score_cnt=[0,0]
         self.round = 0
         self.conn1 = 0
         self.conn2 = 0
@@ -29,12 +30,14 @@ class GameStatus:
             self.p2_ready_to_go_forward = True
 
     def play(self, player, move):
-        res = self.moves[player]
-        self.moves[player] = int(move) + res
-        if player == 0:
-            self.p1Went = move
-        else:
-            self.p2Went = move
+        if(self.get_score_cnt[player]<=1):
+            res = self.moves[player]
+            self.moves[player] = int(move) + res
+            self.get_score_cnt[player]+=1
+            if player == 0:
+                self.p1Went = move
+            else:
+                self.p2Went = move
 
     def connected(self):
         return self.ready
@@ -66,6 +69,7 @@ class GameStatus:
         self.p2Went = False
         self.p1_ready_to_go_forward = False
         self.p2_ready_to_go_forward = False
+        print("reset called")
 
     def restart(self):
         self.restart = True

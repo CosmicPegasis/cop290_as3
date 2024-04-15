@@ -16,12 +16,11 @@ class Waiting(Menu):
         self.helper()
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = ["Back"]
-        
+        self.asset_man.load_sound("server_is_down","assets/server_is_down.mp3")
         self.asset_man.load_sound("waiting","assets/versus/waiting.mp3")
         self.asset_man.load_sound("connected","assets/versus/connected.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.game_type = "versus_waiting"
-        
         self.play_sound("waiting")
         print(self.game_type)
 
@@ -36,6 +35,7 @@ class Waiting(Menu):
         if selected_option ==0:
             self.switch_screen = True
             self.new_screen = versus.Versus()
+            
         return True
 
     def render(self, window):
