@@ -16,13 +16,11 @@ class MultiGame(Menu):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = []
         self.flag = 0
-
-        
         self.asset_man.load_sound("halt", "assets/multiplayer_game/halt.mp3")
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.player_id = p
+        self.asset_man.load_sound("game_halted","assets/game_halted.mp3")
         self.song_list = ["happy_birthday.mid","twinkle.mid"]
-        
         self.song = self.song_list[song_number]
         self.asset_man.load_sound("playing_twinkle","assets/multiplayer_game/playing_twinkle.mp3")
         self.asset_man.load_sound("playing_happy_birthday","assets/multiplayer_game/playing_happy_birthday.mp3")
@@ -69,9 +67,7 @@ class MultiGame(Menu):
     def render(self, window):
         window.fill(BLACK)
         score_font = pygame.font.Font(None, 48)
-
         score_text = score_font.render("Player-" + str(self.player_id), True, WHITE)
-
         score_text_rect = score_text.get_rect()
         score_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
         window.blit(score_text, score_text_rect)     

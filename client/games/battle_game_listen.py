@@ -17,41 +17,34 @@ class Battle_listen(Menu):
         self.OPTIONS = []
         self.flag = 0
         self.asset_man.load_sound("play_to_listen","assets/battle/play_to_listen.mp3")
+        self.asset_man.load_sound("game_halted","assets/game_halted.mp3")
         self.asset_man.load_sound("round_over","assets/battle/round_over.mp3")
+        self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
+        self.asset_man.load_sound("oppo_score_is", "assets/pitch/oppo_score_is.mp3")
         self.game_type = "battle_listen"
         self.game_screen = base_game.MidiGame(
             song_arr, note_length=4, narrate_name=False, narrate_pitch=True
         )
         self.asset_man.load_sound("halt", "assets/multiplayer_game/halt.mp3")
-        # self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.player_id = p
-        # self.song_list = ["happy_birthday.mid","twinkle.mid"]
-        # self.song = self.song_list[song_number]
-        # print(self.song)
-        # self.game_screen = base_game.MidiGame("assets/midi/"+self.song,1,True,False)
-        # self.asset_man.load_sound(
-        #     "the_game_starts_in", "assets/numbers/the_game_starts_in.mp3"
-        # )
-        # self.asset_man.load_sound("3", "assets/numbers/3.mp3")
-        # self.asset_man.load_sound("2", "assets/numbers/2.mp3")
-        # self.asset_man.load_sound("1", "assets/numbers/1.mp3")
         self.game_type = "battle_listen_mult_game"
         self.score = 0
         self.halt_flag = 0
 
     def start_game(self):
         if self.flag == 0:
-            # self.play_sound("the_game_starts_in")
             time.sleep(1)
-            # self.play_sound("3")
-            # time.sleep(1)
-            # self.play_sound("2")
-            # time.sleep(1)
-            # self.play_sound("1")
-            # time.sleep(1)
-            # self.flag = 1
             self.game_screen.start()
             self.flag = 1
+            
+    def load_score(self, score):
+        str_form = str(score)
+        for digit in str_form:
+            time.sleep(0.3)
+            path_sd = "assets/numbers/" + digit + ".mp3"
+            time.sleep(0.3)
+            self.asset_man.load_sound(digit, path_sd)
+            self.play_sound(digit)
 
     def update(self):
         pass
@@ -66,7 +59,7 @@ class Battle_listen(Menu):
         score_font = pygame.font.Font(None, 48)
 
         score_text = score_font.render(
-            "Listening_mode" + str(self.player_id), True, WHITE
+            "Listening Mode For Player - " + str(self.player_id), True, WHITE
         )
 
         score_text_rect = score_text.get_rect()
