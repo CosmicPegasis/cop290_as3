@@ -2,6 +2,7 @@ import mido
 import time
 from client.midi.voice_notes import VoiceNote
 import threading
+import pygame
 
 
 def get_midi_file_events(midi_file):
@@ -50,6 +51,7 @@ class MidiFileNarrator(MidiNarrator):
         self.midi_file = midi_file
 
     def _play(self):
+        pygame.midi.init()
         file = mido.MidiFile(self.midi_file)
         for msg in file:
             if not self.stop:
@@ -77,6 +79,7 @@ class MidiEventNarrator(MidiNarrator):
         self.midi_arr = midi_arr
 
     def _play(self):
+        pygame.midi.init()
         if len(self.midi_arr) == 0:
             return
         delay = self.midi_arr[0][2]
