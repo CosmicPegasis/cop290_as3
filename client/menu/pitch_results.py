@@ -28,6 +28,10 @@ class PitchResultMenu(Menu):
         self.narrate_pitch = narrate_pitch
         self.note_length = note_length
         self.info_sound_playing = False
+        time.sleep(1)
+        self.play_sound("your_score_is")
+        time.sleep(2)
+        self.load_score(score)
 
     def update(self):
         pass

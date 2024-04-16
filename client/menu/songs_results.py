@@ -31,6 +31,10 @@ class SongsResults(Menu):
         self.narrate_pitch = narrate_pitch
         self.note_length = note_length
         self.info_sound_playing = False
+        time.sleep(1)
+        self.play_sound("your_score_is")
+        time.sleep(2)
+        self.load_score(score)
 
     def update(self):
         pass
@@ -58,9 +62,7 @@ class SongsResults(Menu):
         self.info_sound_playing = False
 
     def load_score(self, score):
-        
         str_form = str(score)
-
         for digit in str_form:
             time.sleep(0.3)
             path_sd = "assets/numbers/" + digit + ".mp3"

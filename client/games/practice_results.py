@@ -25,6 +25,10 @@ class PracticeResults(Menu):
         self.narrate_name = narrate_name
         self.narrate_pitch = narrate_pitch
         self.note_length = note_length
+        time.sleep(1)
+        self.play_sound("your_score_is")
+        time.sleep(2)
+        self.load_score(score)
 
     def update(self):
         pass
@@ -34,7 +38,6 @@ class PracticeResults(Menu):
             print("This is info.")
         elif selected_option == 1:
             self.switch_screen = True
-
             self.new_screen = practice_pitch.Practice_game(self.narrate_name,self.narrate_pitch,self.note_length)
             pygame.mixer.music.pause()
         elif selected_option == 2:
