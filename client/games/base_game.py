@@ -81,16 +81,14 @@ class MidiGame:
                         self.cur_events.append(["off", note, event.timestamp])
 
     def stop(self):
+        self.midi_narrator.stop_playback()
         pygame.midi.quit()
         pygame.mixer.music.pause()
-        self.midi_narrator.stop_playback()
         if type(self.midi_source) == str:
             reference = get_midi_file_events(self.midi_source)
             temp = calc_score(self.cur_events, reference, self.note_length)
         else:
             temp = calc_score(self.cur_events, self.midi_source, self.note_length)
-        print(self.cur_events)
-        print(temp)
         return temp
 
 
