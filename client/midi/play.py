@@ -37,7 +37,6 @@ class MidiNarrator(VoiceNote):
 
     def stop_playback(self):
         self.stop = True
-        self.t.join()
 
     def is_playing(self):
         return self.t.is_alive()
@@ -51,22 +50,22 @@ class MidiFileNarrator(MidiNarrator):
         self.midi_file = midi_file
 
     def _play(self):
-        pygame.midi.init()
         file = mido.MidiFile(self.midi_file)
         for msg in file:
-            if not self.stop:
-                if not msg.is_meta:
-                    time.sleep(msg.time * self.slow)
-                    if msg.type == "note_on" and msg.velocity > 0:
-                        if self.narrate_name and self.narrate_note:
-                            self.play_note(msg.note)
-                            self.midi_out.note_on(msg.note, 100)
-                        elif self.narrate_note:
-                            self.midi_out.note_on(msg.note, 100)
-                        else:
-                            self.play_note(msg.note)
-                    elif msg.type == "note_off":
-                        self.midi_out.note_off(msg.note)
+            if not msg.is_meta:
+                time.sleep(msg.time * self.slow)
+                if self.stop:
+                    break
+                if msg.type == "note_on" and msg.velocity > 0:
+                    if self.narrate_name and self.narrate_note:
+                        self.play_note(msg.note)
+                        self.midi_out.note_on(msg.note, 100)
+                    elif self.narrate_note:
+                        self.midi_out.note_on(msg.note, 100)
+                    else:
+                        self.play_note(msg.note)
+                elif msg.type == "note_off":
+                    self.midi_out.note_off(msg.note)
 
         time.sleep(0.5)
 
@@ -79,7 +78,6 @@ class MidiEventNarrator(MidiNarrator):
         self.midi_arr = midi_arr
 
     def _play(self):
-        pygame.midi.init()
         if len(self.midi_arr) == 0:
             return
         delay = self.midi_arr[0][2]
