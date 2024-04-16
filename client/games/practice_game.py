@@ -52,12 +52,6 @@ class Practice_game(Menu):
             self.play_sound("1")
             time.sleep(1)
             self.flag = 1
-            # print("self.narrate_name - ",self.narrate_name)
-            # print("self.narrate_pitch - ",self.narrate_pitch)
-            # print("self.note_length - ",self.note_length)
-            # self.game_screen = base_game.MidiGame(
-            # "assets/midi/learn_pitch.mid", self.note_length, self.narrate_name, self.narrate_pitch
-            # )
             self.game_screen.start()
 
     def update(self):

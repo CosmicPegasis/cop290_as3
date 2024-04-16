@@ -52,12 +52,6 @@ class SongsGame(Menu):
             self.play_sound("1")
             time.sleep(1)
             self.flag = 1
-            # print("self.narrate_name - ",self.narrate_name)
-            # print("self.narrate_pitch - ",self.narrate_pitch)
-            # print("self.note_length - ",self.note_length)
-            # self.game_screen = base_game.MidiGame(
-            # "assets/midi/learn_pitch.mid", self.note_length, self.narrate_name, self.narrate_pitch
-            # )
             self.game_screen.start()
 
     def update(self):
@@ -65,19 +59,13 @@ class SongsGame(Menu):
 
     def handle_selection(self, selected_option):
         if selected_option == 0:
-            print("entered stop function")
             self.game_screen.stop()
-            print("game stopped")
             self.switch_screen = True
             self.new_screen = songs_parameter.SongsParameters(self.song,self.narrate_name,self.narrate_pitch,self.note_length,-1)
-            print("screen set")
         elif selected_option ==1:
-            print("entered stop function")
             score = self.game_screen.stop()
-            print("game stopped")
             self.switch_screen = True
             self.new_screen = songs_results.SongsResults(self.song,score,self.narrate_name,self.narrate_pitch,self.note_length)
-            print("screen set")
             
         return True
 
