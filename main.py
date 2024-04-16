@@ -117,12 +117,29 @@ while running:
             game = n.send("get")
 
         except:
+            print("here")
             print("Could not game. This means client is not connected to server")
             cur_screen.play_sound("server_is_down")
             time.sleep(2)
             cur_screen.new_screen = versus.Versus("Server is down")
             cur_screen = cur_screen.new_screen
             continue
+        
+        if cur_screen.game_type == "versus_waiting":
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    n.send("DISCONNECTED")
+                    n.send("DISCONNECTED")
+                    pygame.quit()
+                elif event.type == pygame.KEYDOWN:
+                    if (event.key == pygame.K_DOWN):
+                        print("entered stop")
+                        cur_screen.new_screen = versus.Versus()
+                        print("game stopped")
+                        n.send("DISCONNECTED")
+                        n.send("DISCONNECTED")
+                        is_network_initiated = 0
+                        cur_screen = cur_screen.new_screen
             
         if cur_screen.game_type == "versus_act_mult_game":
             score_mid1 = 0
@@ -234,6 +251,22 @@ while running:
             cur_screen.new_screen = battle.Battle("Server is down")
             cur_screen = cur_screen.new_screen
             continue
+        
+        if cur_screen.game_type == "battle_waiting":
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    n.send("DISCONNECTED")
+                    n.send("DISCONNECTED")
+                    pygame.quit()
+                elif event.type == pygame.KEYDOWN:
+                    if (event.key == pygame.K_DOWN):
+                        print("entered stop")
+                        cur_screen.new_screen = battle.Battle()
+                        print("game stopped")
+                        n.send("DISCONNECTED")
+                        n.send("DISCONNECTED")
+                        is_network_initiated = 0
+                        cur_screen = cur_screen.new_screen
         
         if game!=None and cur_screen.game_type == "battle_results":
             score_t1 = game.moves[0]
