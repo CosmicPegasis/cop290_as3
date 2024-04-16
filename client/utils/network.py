@@ -6,7 +6,7 @@ import struct
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = "10.184.24.146"
+        self.server = "20.189.122.137"
         self.port = 5555
         self.addr = (self.server, self.port)
         self.client.connect(self.addr)
