@@ -34,7 +34,7 @@ def recvall(sock, count):
 
 if __name__ == "__main__":
     flag = 0
-    server = "10.184.55.145"
+    server = "10.184.24.146"
     port = 5555
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

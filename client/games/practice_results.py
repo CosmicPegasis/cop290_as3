@@ -13,7 +13,7 @@ import client.menu.practice_para as parameter_parameter_pitch
 
 
 class PracticeResults(Menu):
-    def __init__(self, score,narrate_name,narrate_pitch,note_length):
+    def __init__(self, score, narrate_name, narrate_pitch, note_length):
         super().__init__("assets/single/background.mp3")
         self.OPTIONS = ["Info", "Play Again", "Back"]
         pygame.mixer.music.pause()
@@ -38,11 +38,15 @@ class PracticeResults(Menu):
             print("This is info.")
         elif selected_option == 1:
             self.switch_screen = True
-            self.new_screen = practice_pitch.Practice_game(self.narrate_name,self.narrate_pitch,self.note_length)
+            self.new_screen = practice_pitch.Practice_game(
+                self.narrate_name, self.narrate_pitch, self.note_length
+            )
             pygame.mixer.music.pause()
         elif selected_option == 2:
             self.switch_screen = True
-            self.new_screen = parameter_parameter_pitch.Parameters_practice(self.narrate_name,self.narrate_pitch,self.note_length,-1)
+            self.new_screen = parameter_parameter_pitch.Parameters_practice(
+                self.narrate_name, self.narrate_pitch, self.note_length, -1
+            )
             pygame.mixer.music.pause()
         return True
 

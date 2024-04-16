@@ -14,9 +14,9 @@ import client.menu.parameter_learn_pitch as parameter_learn_pitch
 
 
 class LearnPitch(Menu):
-    def __init__(self,narrate_name,narrate_pitch,note_length):
+    def __init__(self, narrate_name, narrate_pitch, note_length):
         super().__init__("assets/single/background.mp3")
-        self.OPTIONS = ["Back","Halt"]
+        self.OPTIONS = ["Back", "Halt"]
         self.flag = 0
 
         self.asset_man.load_sound("back", "assets/back.mp3")
@@ -59,16 +59,17 @@ class LearnPitch(Menu):
         if selected_option == 0:
             self.game_screen.stop()
             self.switch_screen = True
-            self.new_screen = parameter_learn_pitch.Parameters(self.narrate_name,self.narrate_pitch,self.note_length,-1)
+            self.new_screen = parameter_learn_pitch.Parameters(
+                self.narrate_name, self.narrate_pitch, self.note_length, -1
+            )
             pygame.mixer.music.pause()
         elif selected_option == 1:
             score = self.game_screen.stop()
             self.switch_screen = True
-            self.new_screen = pitch_results.PitchResultMenu(score,
-                                                            self.narrate_name,
-                                                            self.narrate_pitch,
-                                                            self.note_length)
-            
+            self.new_screen = pitch_results.PitchResultMenu(
+                score, self.narrate_name, self.narrate_pitch, self.note_length
+            )
+
         return True
 
     def render(self, window):

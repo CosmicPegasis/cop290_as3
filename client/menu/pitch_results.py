@@ -14,7 +14,7 @@ import client.menu.parameter_learn_pitch as parameter_learn_pitch
 
 
 class PitchResultMenu(Menu):
-    def __init__(self, score,narrate_name,narrate_pitch,note_length):
+    def __init__(self, score, narrate_name, narrate_pitch, note_length):
         super().__init__("assets/single/background.mp3")
         self.OPTIONS = ["Info", "Play Again", "Back"]
         pygame.mixer.music.pause()
@@ -41,15 +41,19 @@ class PitchResultMenu(Menu):
             self.play_info_sound()
         elif selected_option == 1:
             self.switch_screen = True
-            self.new_screen = learn_pitch.LearnPitch(self.narrate_name,self.narrate_pitch,self.note_length)
+            self.new_screen = learn_pitch.LearnPitch(
+                self.narrate_name, self.narrate_pitch, self.note_length
+            )
             pygame.mixer.music.pause()
         elif selected_option == 2:
             self.switch_screen = True
-            self.new_screen = parameter_learn_pitch.Parameters(self.narrate_name,self.narrate_pitch,self.note_length,-1)
+            self.new_screen = parameter_learn_pitch.Parameters(
+                self.narrate_name, self.narrate_pitch, self.note_length, -1
+            )
             pygame.mixer.music.pause()
 
         return True
-    
+
     def play_info_sound(self):
         self.play_sound("info_results")
         self.info_sound_playing = True
@@ -91,7 +95,7 @@ class PitchResultMenu(Menu):
                 WINDOW_HEIGHT // 2 - len(self.OPTIONS) * 36 // 2 + i * 36,
             )
             window.blit(text, text_rect)
-            
+
     def handle_events(self, events) -> bool:
         for event in events:
             if event.type == pygame.QUIT:

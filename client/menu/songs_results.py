@@ -16,7 +16,7 @@ import client.menu.songs_parameter as songs_parameter
 
 
 class SongsResults(Menu):
-    def __init__(self,song, score,narrate_name,narrate_pitch,note_length):
+    def __init__(self, song, score, narrate_name, narrate_pitch, note_length):
         super().__init__("assets/single/background.mp3")
         self.OPTIONS = ["Info", "Play Again", "Back"]
         pygame.mixer.music.pause()
@@ -44,15 +44,19 @@ class SongsResults(Menu):
             self.play_info_sound()
         elif selected_option == 1:
             self.switch_screen = True
-            self.new_screen = songs_game.SongsGame(self.song,self.narrate_name,self.narrate_pitch,self.note_length)
+            self.new_screen = songs_game.SongsGame(
+                self.song, self.narrate_name, self.narrate_pitch, self.note_length
+            )
             pygame.mixer.music.pause()
         elif selected_option == 2:
             self.switch_screen = True
-            self.new_screen = songs_parameter.SongsParameters(self.song,self.narrate_name,self.narrate_pitch,self.note_length,-1)
+            self.new_screen = songs_parameter.SongsParameters(
+                self.song, self.narrate_name, self.narrate_pitch, self.note_length, -1
+            )
             pygame.mixer.music.pause()
 
         return True
-    
+
     def play_info_sound(self):
         self.play_sound("info_results")
         self.info_sound_playing = True

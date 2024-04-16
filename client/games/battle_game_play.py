@@ -19,11 +19,13 @@ class Battle_play(Menu):
         self.flag = 0
         self.listener = midi_listener.MidiListener(5)
         self.asset_man.load_sound("halt", "assets/multiplayer_game/halt.mp3")
-        self.asset_man.load_sound("game_halted","assets/game_halted.mp3")
+        self.asset_man.load_sound("game_halted", "assets/game_halted.mp3")
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.asset_man.load_sound("oppo_score_is", "assets/pitch/oppo_score_is.mp3")
         self.player_id = p
-        self.asset_man.load_sound("play_round_started","assets/battle/play_round_started.mp3")
+        self.asset_man.load_sound(
+            "play_round_started", "assets/battle/play_round_started.mp3"
+        )
         self.game_type = "battle_act_mult_game"
         self.score = 0
         self.halt_flag = 0
@@ -39,7 +41,7 @@ class Battle_play(Menu):
 
     def update(self):
         pass
-    
+
     def load_score(self, score):
         str_form = str(score)
         for digit in str_form:
@@ -57,7 +59,9 @@ class Battle_play(Menu):
     def render(self, window):
         window.fill(BLACK)
         score_font = pygame.font.Font(None, 48)
-        score_text = score_font.render("Playing round for Player - " + str(self.player_id), True, WHITE)
+        score_text = score_font.render(
+            "Playing round for Player - " + str(self.player_id), True, WHITE
+        )
         score_text_rect = score_text.get_rect()
         score_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
         window.blit(score_text, score_text_rect)

@@ -16,9 +16,9 @@ import client.menu.parameter_learn_pitch as parameter_learn_pitch
 
 
 class Practice_game(Menu):
-    def __init__(self,narrate_name,narrate_pitch,note_length):
+    def __init__(self, narrate_name, narrate_pitch, note_length):
         super().__init__("assets/single/background.mp3")
-        self.OPTIONS = ["Back","Halt"]
+        self.OPTIONS = ["Back", "Halt"]
         self.flag = 0
 
         self.asset_man.load_sound("back", "assets/back.mp3")
@@ -63,16 +63,20 @@ class Practice_game(Menu):
             self.game_screen.stop()
             print("game stopped")
             self.switch_screen = True
-            self.new_screen = parameter_practice_pitch.Parameters_practice(self.narrate_name,self.narrate_pitch,self.note_length,-1)
+            self.new_screen = parameter_practice_pitch.Parameters_practice(
+                self.narrate_name, self.narrate_pitch, self.note_length, -1
+            )
             print("screen set")
-        elif selected_option ==1:
+        elif selected_option == 1:
             print("entered stop function")
             score = self.game_screen.stop()
             print("game stopped")
             self.switch_screen = True
-            self.new_screen = practice_results.PracticeResults(score,self.narrate_name,self.narrate_pitch,self.note_length)
+            self.new_screen = practice_results.PracticeResults(
+                score, self.narrate_name, self.narrate_pitch, self.note_length
+            )
             print("screen set")
-            
+
         return True
 
     def render(self, window):

@@ -16,9 +16,9 @@ class Battle_listen(Menu):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = []
         self.flag = 0
-        self.asset_man.load_sound("play_to_listen","assets/battle/play_to_listen.mp3")
-        self.asset_man.load_sound("game_halted","assets/game_halted.mp3")
-        self.asset_man.load_sound("round_over","assets/battle/round_over.mp3")
+        self.asset_man.load_sound("play_to_listen", "assets/battle/play_to_listen.mp3")
+        self.asset_man.load_sound("game_halted", "assets/game_halted.mp3")
+        self.asset_man.load_sound("round_over", "assets/battle/round_over.mp3")
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.asset_man.load_sound("oppo_score_is", "assets/pitch/oppo_score_is.mp3")
         self.game_type = "battle_listen"
@@ -36,7 +36,7 @@ class Battle_listen(Menu):
             time.sleep(1)
             self.game_screen.start()
             self.flag = 1
-            
+
     def load_score(self, score):
         str_form = str(score)
         for digit in str_form:

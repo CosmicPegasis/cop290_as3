@@ -15,14 +15,14 @@ import client.menu.songs_results as songs_results
 
 
 class SongsGame(Menu):
-    def __init__(self,song,narrate_name,narrate_pitch,note_length):
+    def __init__(self, song, narrate_name, narrate_pitch, note_length):
         super().__init__("assets/single/background.mp3")
-        self.OPTIONS = ["Back","Halt"]
+        self.OPTIONS = ["Back", "Halt"]
         self.flag = 0
         self.song = song
         self.asset_man.load_sound("back", "assets/back.mp3")
-        self.song_path = song.lower().replace(" ","_")
-        self.midi_path = "assets/midi/"+self.song_path+".mid"
+        self.song_path = song.lower().replace(" ", "_")
+        self.midi_path = "assets/midi/" + self.song_path + ".mid"
         self.game_screen = base_game.MidiGame(
             self.midi_path, note_length, narrate_pitch, narrate_name
         )
@@ -61,12 +61,20 @@ class SongsGame(Menu):
         if selected_option == 0:
             self.game_screen.stop()
             self.switch_screen = True
-            self.new_screen = songs_parameter.SongsParameters(self.song,self.narrate_name,self.narrate_pitch,self.note_length,-1)
-        elif selected_option ==1:
+            self.new_screen = songs_parameter.SongsParameters(
+                self.song, self.narrate_name, self.narrate_pitch, self.note_length, -1
+            )
+        elif selected_option == 1:
             score = self.game_screen.stop()
             self.switch_screen = True
-            self.new_screen = songs_results.SongsResults(self.song,score,self.narrate_name,self.narrate_pitch,self.note_length)
-            
+            self.new_screen = songs_results.SongsResults(
+                self.song,
+                score,
+                self.narrate_name,
+                self.narrate_pitch,
+                self.note_length,
+            )
+
         return True
 
     def render(self, window):

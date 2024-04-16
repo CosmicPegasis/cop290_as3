@@ -10,12 +10,13 @@ from client.utils.constants import (
     SELECTED_COLOR,
 )
 
+
 class Battle(Menu):
-    def __init__(self,message = None):
+    def __init__(self, message=None):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = ["Find Match", "Back"]
         self.message = message
-        self.asset_man.load_sound("server_is_down","assets/server_is_down.mp3")
+        self.asset_man.load_sound("server_is_down", "assets/server_is_down.mp3")
         self.asset_man.load_sound("find_match", "assets/versus/find_match.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
 
@@ -34,13 +35,13 @@ class Battle(Menu):
 
     def render(self, window):
         window.fill(BLACK)
-        if(self.message):
+        if self.message:
             score_font = pygame.font.Font(None, 48)
             score_text = score_font.render(self.message, True, WHITE)
             score_text_rect = score_text.get_rect()
             score_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
             window.blit(score_text, score_text_rect)
-            
+
         for i, option in enumerate(self.OPTIONS):
             if i == self.selected_option:
                 color = SELECTED_COLOR

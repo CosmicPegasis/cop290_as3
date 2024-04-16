@@ -12,13 +12,14 @@ from client.utils.constants import (
 import pygame
 import time
 
+
 class BattleResults(Menu):
     def __init__(self, move1, move2, player_id):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = ["Play Again", "Back"]
 
         self.asset_man.load_sound("play_again", "assets/pitch/play_again.mp3")
-        
+
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.move1 = move1
         self.move2 = move2
@@ -49,7 +50,7 @@ class BattleResults(Menu):
         return True
 
     def load_score(self, score):
-        
+
         str_form = str(score)
 
         for digit in str_form:
@@ -58,36 +59,30 @@ class BattleResults(Menu):
             time.sleep(0.3)
             self.asset_man.load_sound(digit, path_sd)
             self.play_sound(digit)
-    
+
     def render(self, window):
         window.fill(BLACK)
 
         score_font = pygame.font.Font(None, 48)
         if self.player_id == 0:
             score_text = score_font.render(
-                "Your "
-                + "score: "
-                + str(self.move1),
+                "Your " + "score: " + str(self.move1),
                 True,
                 WHITE,
             )
             opponent_text = score_font.render(
-                "Opponent's score: "
-                + str(self.move2),
+                "Opponent's score: " + str(self.move2),
                 True,
                 WHITE,
             )
         else:
             score_text = score_font.render(
-                "Your "
-                + "score: "
-                + str(self.move2),
+                "Your " + "score: " + str(self.move2),
                 True,
                 WHITE,
             )
             opponent_text = score_font.render(
-                "Opponent's score: "
-                + str(self.move1),
+                "Opponent's score: " + str(self.move1),
                 True,
                 WHITE,
             )

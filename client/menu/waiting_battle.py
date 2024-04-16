@@ -15,12 +15,12 @@ class Waiting_Battle(Menu):
         self.helper()
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = ["Back"]
-        self.asset_man.load_sound("server_is_down","assets/server_is_down.mp3")
-        self.asset_man.load_sound("waiting","assets/versus/waiting.mp3")
-        self.asset_man.load_sound("connected","assets/versus/connected.mp3")
+        self.asset_man.load_sound("server_is_down", "assets/server_is_down.mp3")
+        self.asset_man.load_sound("waiting", "assets/versus/waiting.mp3")
+        self.asset_man.load_sound("connected", "assets/versus/connected.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.game_type = "battle_waiting"
-        
+
         self.play_sound("waiting")
         print(self.game_type)
 
@@ -32,7 +32,7 @@ class Waiting_Battle(Menu):
         self.game_type = "battle_waiting"
 
     def handle_selection(self, selected_option):
-        if selected_option ==0:
+        if selected_option == 0:
             self.switch_screen = True
             self.new_screen = battle.Battle()
         return True
@@ -46,7 +46,7 @@ class Waiting_Battle(Menu):
             score_text_rect = score_text.get_rect()
             score_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
             window.blit(score_text, score_text_rect)
-            
+
             if i == self.selected_option:
                 color = SELECTED_COLOR
             else:

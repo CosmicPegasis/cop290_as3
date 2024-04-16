@@ -18,7 +18,7 @@ class MultiGameResults(Menu):
         self.OPTIONS = ["Play Again", "Back"]
 
         self.asset_man.load_sound("play_again", "assets/pitch/play_again.mp3")
-        
+
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.move1 = move1
         self.move2 = move2
@@ -33,13 +33,12 @@ class MultiGameResults(Menu):
         self.play_sound("oppo_score_is")
         time.sleep(2)
         self.load_score(move2)
-        
 
     def update(self):
         pass
-    
+
     def load_score(self, score):
-        
+
         str_form = str(score)
 
         for digit in str_form:
@@ -65,39 +64,33 @@ class MultiGameResults(Menu):
         score_font = pygame.font.Font(None, 48)
         if self.player_id == 0:
             score_text = score_font.render(
-                "Your "#+str(self.player_id)
-                + "score: "
-                + str(self.move1),
+                "Your " + "score: " + str(self.move1),  # +str(self.player_id)
                 True,
                 WHITE,
             )
             opponent_text = score_font.render(
-                "Opponent's score: "
-                + str(self.move2),
+                "Opponent's score: " + str(self.move2),
                 True,
                 WHITE,
             )
         else:
             score_text = score_font.render(
-                "Your "#+str(self.player_id)
-                + "score: "
-                + str(self.move2),
+                "Your " + "score: " + str(self.move2),  # +str(self.player_id)
                 True,
                 WHITE,
             )
             opponent_text = score_font.render(
-                "Opponent's score: "
-                + str(self.move1),
+                "Opponent's score: " + str(self.move1),
                 True,
                 WHITE,
-            ) 
+            )
         score_text_rect = score_text.get_rect()
         score_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
         opponent_text_rect = opponent_text.get_rect()
         opponent_text_rect.midtop = (WINDOW_WIDTH // 2, 125)
         window.blit(score_text, score_text_rect)
         window.blit(opponent_text, opponent_text_rect)
-        
+
         for i, option in enumerate(self.OPTIONS):
             if i == self.selected_option:
                 color = SELECTED_COLOR

@@ -5,15 +5,16 @@ import client.menu.home as home
 import pygame
 import client.menu.battle_mode as battle
 
+
 class MainMenu(Menu):
     def __init__(self):
         super().__init__("assets/menu/background.mp3")
-        self.OPTIONS = ["Info", "Single Player", "Versus Mode","Battle Mode", "Back"]
+        self.OPTIONS = ["Info", "Single Player", "Versus Mode", "Battle Mode", "Back"]
 
         self.asset_man.load_sound("info", "assets/info.mp3")
         self.asset_man.load_sound("single_player", "assets/menu/single_player.mp3")
         self.asset_man.load_sound("versus_mode", "assets/menu/versus_mode.mp3")
-        self.asset_man.load_sound("battle_mode","assets/menu/battle_mode.mp3")
+        self.asset_man.load_sound("battle_mode", "assets/menu/battle_mode.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.asset_man.load_sound("info_menu", "assets/menu/info_menu.mp3")
         self.info_sound_playing = False
