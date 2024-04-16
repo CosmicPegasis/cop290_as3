@@ -77,6 +77,8 @@ class MidiEventNarrator(MidiNarrator):
         self.midi_arr = midi_arr
 
     def _play(self):
+        if len(self.midi_arr) == 0:
+            return
         delay = self.midi_arr[0][2]
         new_arr = []
         for elem in self.midi_arr:
