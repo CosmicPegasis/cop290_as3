@@ -136,15 +136,23 @@ while running:
                     pygame.quit()
                 elif event.type == pygame.KEYDOWN:
                     print("entered stop")
-                    score_mid2 = cur_screen.game_screen.stop()
+                    if player == 1:
+                        score_mid2 = cur_screen.game_screen.stop()
+                    else:
+                        score_mid1 = cur_screen.game_screen.stop()
                     print("game stopped")
                     halt = 1
                     n.send("DISCONNECTED")
 
             if game == None:
                 print("One halted")
-                score_mid1 = cur_screen.game_screen.stop()
+                if player == 1:
+                    score_mid2 = cur_screen.game_screen.stop()
+                else:
+                    score_mid1 = cur_screen.game_screen.stop()
                 cur_screen.play_sound("game_halted")
+                print(score_mid1, score_mid2, player)
+                print("A")
                 cur_screen.new_screen = multiplayer_game_result.MultiGameResults(
                     str(score_mid1), str(score_mid2), player
                 )
@@ -153,8 +161,10 @@ while running:
 
             if halt == 1:
                 cur_screen.play_sound("game_halted")
+                print(score_mid2, score_mid1, player)
+                print("B")
                 cur_screen.new_screen = multiplayer_game_result.MultiGameResults(
-                    str(score_mid1), str(score_mid2), player
+                    str(score_mid2), str(score_mid1), player
                 )
                 cur_screen = cur_screen.new_screen
                 is_network_initiated = 0
@@ -258,16 +268,18 @@ while running:
         if game != None and cur_screen.game_type == "battle_results":
             score_t1 = game.moves[0]
             score_t2 = game.moves[1]
+            cur_screen.play_sound("game_halted")
             time.sleep(1)
             cur_screen.play_sound("your_score_is")
             time.sleep(2)
-            cur_screen.load_score(score_t1)
+            cur_screen.load_score(0)
             time.sleep(1)
             cur_screen.play_sound("oppo_score_is")
             time.sleep(2)
-            cur_screen.load_score(score_t2)
+            cur_screen.load_score(0)
+            print("F")
             cur_screen.new_screen = battle_game_results.BattleResults(
-                str(score_t1), str(score_t2), player
+                str(0), str(0), player
             )
             cur_screen = cur_screen.new_screen
             is_network_initiated = 0
@@ -277,16 +289,18 @@ while running:
                 cur_screen.listener.stop()
             if cur_screen.game_type == "battle_listen_mult_game":
                 cur_screen.game_screen.stop()
+            cur_screen.play_sound("game_halted")
             time.sleep(1)
             cur_screen.play_sound("your_score_is")
             time.sleep(2)
-            cur_screen.load_score(score_keeper[0])
+            cur_screen.load_score(0)
             time.sleep(1)
             cur_screen.play_sound("oppo_score_is")
             time.sleep(2)
-            cur_screen.load_score(score_keeper[1])
+            cur_screen.load_score(0)
+            print("F")
             cur_screen.new_screen = battle_game_results.BattleResults(
-                str(score_keeper[0]), str(score_keeper[1]), player
+                str(0), str(0), player
             )
             cur_screen = cur_screen.new_screen
             is_network_initiated = 0
@@ -306,31 +320,35 @@ while running:
             if game == None:
                 print("One halted")
                 # score_mid1 = cur_screen.game_screen.stop()
+                cur_screen.play_sound("game_halted")
                 time.sleep(1)
                 cur_screen.play_sound("your_score_is")
                 time.sleep(2)
-                cur_screen.load_score(score_mid1)
+                cur_screen.load_score(0)
                 time.sleep(1)
                 cur_screen.play_sound("oppo_score_is")
                 time.sleep(2)
-                cur_screen.load_score(score_mid2)
+                cur_screen.load_score(0)
+                print("E")
                 cur_screen.new_screen = battle_game_results.BattleResults(
-                    str(score_mid1), str(score_mid2), player
+                    str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
                 is_network_initiated = 0
 
             if halt == 1:
+                cur_screen.play_sound("game_halted")
                 time.sleep(1)
                 cur_screen.play_sound("your_score_is")
                 time.sleep(2)
-                cur_screen.load_score(score_mid1)
+                cur_screen.load_score(0)
                 time.sleep(1)
                 cur_screen.play_sound("oppo_score_is")
                 time.sleep(2)
-                cur_screen.load_score(score_mid2)
+                cur_screen.load_score(0)
+                print("D")
                 cur_screen.new_screen = battle_game_results.BattleResults(
-                    str(score_mid1), str(score_mid2), player
+                    str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
                 is_network_initiated = 0
@@ -351,31 +369,35 @@ while running:
             if game == None:
                 print("One halted")
                 # score_mid1 = cur_screen.game_screen.stop()
+                cur_screen.play_sound("game_halted")
                 time.sleep(1)
                 cur_screen.play_sound("your_score_is")
                 time.sleep(2)
-                cur_screen.load_score(score_mid1)
+                cur_screen.load_score(0)
                 time.sleep(1)
                 cur_screen.play_sound("oppo_score_is")
                 time.sleep(2)
-                cur_screen.load_score(score_mid2)
+                cur_screen.load_score(0)
+                print("C")
                 cur_screen.new_screen = battle_game_results.BattleResults(
-                    str(score_mid1), str(score_mid2), player
+                    str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
                 is_network_initiated = 0
 
             if halt == 1:
+                cur_screen.play_sound("game_halted")
                 time.sleep(1)
                 cur_screen.play_sound("your_score_is")
                 time.sleep(2)
-                cur_screen.load_score(score_mid1)
+                cur_screen.load_score(0)
                 time.sleep(1)
                 cur_screen.play_sound("oppo_score_is")
                 time.sleep(2)
-                cur_screen.load_score(score_mid2)
+                cur_screen.load_score(0)
+                print("B")
                 cur_screen.new_screen = battle_game_results.BattleResults(
-                    str(score_mid1), str(score_mid2), player
+                    str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
                 is_network_initiated = 0
@@ -485,6 +507,7 @@ while running:
                     cur_screen.play_sound("oppo_score_is")
                     time.sleep(2)
                     cur_screen.load_score(score2)
+                    print("A")
                     cur_screen.new_screen = battle_game_results.BattleResults(
                         str(score1), str(score2), player
                     )
@@ -503,3 +526,4 @@ while running:
     pygame.display.flip()
 
 pygame.quit()
+# B F A

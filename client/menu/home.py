@@ -28,4 +28,5 @@ class Home(Menu):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 self.asset_man.sounds["info"].stop()
+
         return super().handle_events(events)

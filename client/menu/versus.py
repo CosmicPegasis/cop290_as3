@@ -18,6 +18,8 @@ class Versus(Menu):
         self.message = message
         self.asset_man.load_sound("find_match", "assets/versus/find_match.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
+        # self.asset_man.load_sound("info_versus", "assets/versus/info_versus.mp3")
+        # self.info_sound_playing = False
 
     def update(self):
         pass
@@ -34,11 +36,17 @@ class Versus(Menu):
 
     def render(self, window):
         window.fill(BLACK)
+
+        txt_font = pygame.font.Font(None, 48)
+        txt_text = txt_font.render("Versus Mode", True, WHITE)
+        txt_text_rect = txt_text.get_rect()
+        txt_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
+        window.blit(txt_text, txt_text_rect)
         if self.message:
-            score_font = pygame.font.Font(None, 48)
+            score_font = pygame.font.Font(None, 30)
             score_text = score_font.render(self.message, True, WHITE)
             score_text_rect = score_text.get_rect()
-            score_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
+            score_text_rect.midtop = (WINDOW_WIDTH // 2, 100)
             window.blit(score_text, score_text_rect)
 
         for i, option in enumerate(self.OPTIONS):
@@ -54,3 +62,21 @@ class Versus(Menu):
                 WINDOW_HEIGHT // 2 - len(self.OPTIONS) * 36 // 2 + i * 36,
             )
             window.blit(text, text_rect)
+
+    # def play_info_sound(self):
+    #     self.play_sound("info_versus")
+    #     self.info_sound_playing = True
+
+    # def stop_info_sound(self):
+    #     self.asset_man.sounds["info_versus"].stop()
+    #     self.info_sound_playing = False
+
+    # def handle_events(self, events) -> bool:
+    #     for event in events:
+    #         if event.type == pygame.QUIT:
+    #             return False
+    #         elif event.type == pygame.KEYDOWN:
+    #             if self.info_sound_playing:
+    #                 self.stop_info_sound()
+
+    #     return super().handle_events(events)

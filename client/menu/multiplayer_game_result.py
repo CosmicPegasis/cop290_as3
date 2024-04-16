@@ -28,11 +28,17 @@ class MultiGameResults(Menu):
         time.sleep(1)
         self.play_sound("your_score_is")
         time.sleep(2)
-        self.load_score(move1)
+        if player_id == 0:
+            self.load_score(move1)
+        else:
+            self.load_score(move2)
         time.sleep(1)
         self.play_sound("oppo_score_is")
         time.sleep(2)
-        self.load_score(move2)
+        if player_id == 0:
+            self.load_score(move2)
+        else:
+            self.load_score(move1)
 
     def update(self):
         pass

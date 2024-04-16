@@ -96,3 +96,13 @@ class SongsResults(Menu):
                 WINDOW_HEIGHT // 2 - len(self.OPTIONS) * 36 // 2 + i * 36,
             )
             window.blit(text, text_rect)
+
+    def handle_events(self, events) -> bool:
+        for event in events:
+            if event.type == pygame.QUIT:
+                return False
+            elif event.type == pygame.KEYDOWN:
+                if self.info_sound_playing:
+                    self.stop_info_sound()
+
+        return super().handle_events(events)
