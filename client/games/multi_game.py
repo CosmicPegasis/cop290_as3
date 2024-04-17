@@ -15,7 +15,7 @@ class MultiGame(Menu):
     def __init__(self, p, song_number):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = []
-        self.flag = 0
+        self.is_game_started = 0
         self.asset_man.load_sound("halt", "assets/multiplayer_game/halt.mp3")
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.player_id = p
@@ -44,7 +44,7 @@ class MultiGame(Menu):
         self.halt_flag = 0
 
     def start_game(self):
-        if self.flag == 0:
+        if self.is_game_started == 0:
             self.play_sound("the_game_starts_in")
             time.sleep(1)
             self.play_sound("3")
@@ -59,9 +59,9 @@ class MultiGame(Menu):
             else:
                 self.play_sound("playing_twinkle")
                 time.sleep(1)
-            self.flag = 1
+            self.is_game_started = 1
             self.game_screen.start()
-            self.flag = 1
+            self.is_game_started = 1
 
     def update(self):
         pass

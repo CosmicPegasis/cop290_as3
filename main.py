@@ -14,7 +14,6 @@ import client.menu.battle_game_results as battle_game_results
 import client.games.battle_game_listen as battle_listen
 import client.menu.versus as versus
 import client.menu.battle_mode as battle
-import socket
 import pickle
 
 pygame.init()
@@ -25,14 +24,22 @@ pygame.display.set_caption("Piano Master")
 running = True
 cur_screen = Home()
 
-clock = 0
 n = 0
 player = 0
-delay = 0
 halt = 0
 round = 0
-is_network_initiated = 0
+is_network_initialised = 0
 score_keeper = (0, 0)
+
+
+def versus_initialise_network():
+    global n, is_network_initialised
+    n = Network()
+    print(n)
+    n.send("0")
+    is_network_initialised = 1
+
+
 while running:
 
     running = cur_screen.handle_events(pygame.event.get())
@@ -44,7 +51,7 @@ while running:
 
     if cur_screen.game_type == "pitch":
 
-        if cur_screen.flag == 0:
+        if cur_screen.is_game_started == 0:
             cur_screen.start_game()
 
         cur_screen.game_screen.handle_events()
@@ -60,7 +67,7 @@ while running:
             pygame.mixer.music.unpause()
 
     if cur_screen.game_type == "practice":
-        if cur_screen.flag == 0:
+        if cur_screen.is_game_started == 0:
             cur_screen.start_game()
 
         cur_screen.game_screen.handle_events()
@@ -75,7 +82,7 @@ while running:
             pygame.mixer.music.unpause()
 
     if cur_screen.game_type == "songs":
-        if cur_screen.flag == 0:
+        if cur_screen.is_game_started == 0:
             cur_screen.start_game()
 
         cur_screen.game_screen.handle_events()
@@ -90,18 +97,14 @@ while running:
             )
             cur_screen = cur_screen.new_screen
             pygame.mixer.music.unpause()
-    # 3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
     if (cur_screen.game_type != None) and (cur_screen.game_type[:6] == "versus"):
         try:
-            if is_network_initiated == 0:
-                clock = pygame.time.Clock()
-                n = Network()
-                n.send("0")
-                is_network_initiated = 1
-                round = 0
+            if is_network_initialised == 0:
+                versus_initialise_network()
             game = n.send("get")
 
-        except:
+        except Exception as e:
+            print(e)
             print("Server is Down")
             if cur_screen.game_type == "versus_waiting":
                 cur_screen.asset_man.sounds["waiting"].stop()
@@ -125,7 +128,7 @@ while running:
                         print("game stopped")
                         n.send("DISCONNECTED")
                         n.send("DISCONNECTED")
-                        is_network_initiated = 0
+                        is_network_initialised = 0
                         cur_screen = cur_screen.new_screen
                         cur_screen.play_sound("exit_waiting")
                         time.sleep(1)
@@ -161,7 +164,7 @@ while running:
                     str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
-                is_network_initiated = 0
+                is_network_initialised = 0
 
             if halt == 1:
                 cur_screen.play_sound("game_halted")
@@ -171,7 +174,7 @@ while running:
                     str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
-                is_network_initiated = 0
+                is_network_initialised = 0
                 halt = 0
 
             pygame.display.flip()
@@ -209,12 +212,12 @@ while running:
                 pygame.mixer.music.pause()
                 cur_screen = cur_screen.new_screen
                 pygame.display.flip()
-                is_network_initiated = 0
+                is_network_initialised = 0
 
             else:
                 if cur_screen.game_type == "versus_act_mult_game":
 
-                    if cur_screen.flag == 0:
+                    if cur_screen.is_game_started == 0:
                         cur_screen.start_game()
                     if cur_screen.game_screen.is_running():
                         cur_screen.game_screen.handle_events()
@@ -234,11 +237,10 @@ while running:
     #################################################################################################
     if (cur_screen.game_type != None) and (cur_screen.game_type[:6] == "battle"):
         try:
-            if is_network_initiated == 0:
-                clock = pygame.time.Clock()
+            if is_network_initialised == 0:
                 n = Network()
                 n.send("1")
-                is_network_initiated = 1
+                is_network_initialised = 1
                 round = 0
 
             try:
@@ -270,7 +272,7 @@ while running:
                         print("game stopped")
                         n.send("DISCONNECTED")
                         n.send("DISCONNECTED")
-                        is_network_initiated = 0
+                        is_network_initialised = 0
                         cur_screen = cur_screen.new_screen
                         cur_screen.play_sound("exit_waiting")
                         time.sleep(1)
@@ -284,7 +286,7 @@ while running:
                 str(0), str(0), player
             )
             cur_screen = cur_screen.new_screen
-            is_network_initiated = 0
+            is_network_initialised = 0
 
         if (game == None) and cur_screen.game_type != "battle_results":
             if cur_screen.game_type == "battle_act_mult_game":
@@ -297,7 +299,7 @@ while running:
                 str(0), str(0), player
             )
             cur_screen = cur_screen.new_screen
-            is_network_initiated = 0
+            is_network_initialised = 0
 
         if game != None and cur_screen.game_type == "battle_listen_mult_game":
             score_mid1 = game.moves[0]
@@ -320,7 +322,7 @@ while running:
                     str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
-                is_network_initiated = 0
+                is_network_initialised = 0
 
             if halt == 1:
                 cur_screen.play_sound("game_halted")
@@ -329,7 +331,7 @@ while running:
                     str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
-                is_network_initiated = 0
+                is_network_initialised = 0
                 halt = 0
 
         if game != None and cur_screen.game_type == "battle_act_mult_game":
@@ -353,7 +355,7 @@ while running:
                     str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
-                is_network_initiated = 0
+                is_network_initialised = 0
 
             if halt == 1:
                 cur_screen.play_sound("game_halted")
@@ -362,12 +364,12 @@ while running:
                     str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
-                is_network_initiated = 0
+                is_network_initialised = 0
                 halt = 0
 
         if game != None and cur_screen.game_type == "battle_act_mult_game":
             pygame.display.flip()
-            if cur_screen.flag == 0:
+            if cur_screen.is_game_started == 0:
                 cur_screen.start_game()
             if cur_screen.listener.is_listening():
                 cur_screen.listener.handle_events()
@@ -394,7 +396,7 @@ while running:
             and (cur_screen.game_type == "battle_listen_mult_game")
         ):
             pygame.display.flip()
-            if cur_screen.flag == 0:
+            if cur_screen.is_game_started == 0:
                 cur_screen.start_game()
             if cur_screen.game_screen.is_running():
                 cur_screen.game_screen.handle_events()
@@ -467,8 +469,8 @@ while running:
                         str(score1), str(score2), player
                     )
                     cur_screen = cur_screen.new_screen
-                    is_network_initiated = 0
-                    delay = 0
+                    is_network_initialised = 0
+
                 else:
                     cur_screen.play_sound("round_over")
                     time.sleep(1.5)

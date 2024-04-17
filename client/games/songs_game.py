@@ -18,7 +18,7 @@ class SongsGame(Menu):
     def __init__(self, song, narrate_name, narrate_pitch, note_length):
         super().__init__("assets/single/background.mp3")
         self.OPTIONS = ["Back", "Halt"]
-        self.flag = 0
+        self.is_game_started = 0
         self.song = song
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.song_path = song.lower().replace(" ", "_")
@@ -42,7 +42,7 @@ class SongsGame(Menu):
         self.note_length = note_length
 
     def start_game(self):
-        if self.flag == 0:
+        if self.is_game_started == 0:
             self.play_sound("the_game_starts_in")
             time.sleep(1)
             self.play_sound("3")
@@ -51,7 +51,7 @@ class SongsGame(Menu):
             time.sleep(1)
             self.play_sound("1")
             time.sleep(1)
-            self.flag = 1
+            self.is_game_started = 1
             self.game_screen.start()
 
     def update(self):

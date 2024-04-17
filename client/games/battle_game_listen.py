@@ -15,7 +15,7 @@ class Battle_listen(Menu):
     def __init__(self, p, song_arr):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = []
-        self.flag = 0
+        self.is_game_started = 0
         self.asset_man.load_sound("play_to_listen", "assets/battle/play_to_listen.mp3")
         self.asset_man.load_sound("game_halted", "assets/game_halted.mp3")
         self.asset_man.load_sound("round_over", "assets/battle/round_over.mp3")
@@ -32,10 +32,10 @@ class Battle_listen(Menu):
         self.halt_flag = 0
 
     def start_game(self):
-        if self.flag == 0:
+        if self.is_game_started == 0:
             time.sleep(1)
             self.game_screen.start()
-            self.flag = 1
+            self.is_game_started = 1
 
     def load_score(self, score):
         str_form = str(score)

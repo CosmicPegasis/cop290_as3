@@ -16,7 +16,7 @@ class Battle_play(Menu):
     def __init__(self, p):
         super().__init__("assets/versus/background.mp3")
         self.OPTIONS = []
-        self.flag = 0
+        self.is_game_started = 0
         self.listener = midi_listener.MidiListener(5)
         self.asset_man.load_sound("halt", "assets/multiplayer_game/halt.mp3")
         self.asset_man.load_sound("game_halted", "assets/game_halted.mp3")
@@ -31,10 +31,10 @@ class Battle_play(Menu):
         self.halt_flag = 0
 
     def start_game(self):
-        if self.flag == 0:
+        if self.is_game_started == 0:
             self.play_sound("play_round_started")
             time.sleep(1)
-            self.flag = 1
+            self.is_game_started = 1
             self.listener.start()
             print("listener started")
             # self.flag = 1   # To be checked
