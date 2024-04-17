@@ -74,10 +74,10 @@ class MidiGame:
                     note_off = True if event.status // 16 == 8 else False
                     if note_on:
                         # print(voice_notes._midi_to_note(note), end=" ")
-                        self.midi_output.note_on(note, velocity)
+                        # self.midi_output.note_on(note, velocity)
                         self.cur_events.append(["on", note, event.timestamp])
                     elif note_off:
-                        self.midi_output.note_off(note)
+                        # self.midi_output.note_off(note)
                         self.cur_events.append(["off", note, event.timestamp])
 
     def stop(self):
