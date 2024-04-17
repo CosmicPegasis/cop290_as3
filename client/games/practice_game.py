@@ -24,7 +24,7 @@ class Practice_game(Menu):
         self.asset_man.load_sound("back", "assets/back.mp3")
 
         self.game_screen = pitch_game.PitchGame(
-            "assets/midi/learn_pitch.mid", note_length, narrate_pitch, narrate_name
+            note_length, narrate_pitch, narrate_name
         )
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
 
@@ -52,7 +52,9 @@ class Practice_game(Menu):
             self.play_sound("1")
             time.sleep(1)
             self.flag = 1
+            print("Practice started")
             self.game_screen.start()
+            print("Practice ended")
 
     def update(self):
         pass

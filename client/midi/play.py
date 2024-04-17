@@ -76,6 +76,7 @@ class MidiEventNarrator(MidiNarrator):
     ):
         super().__init__(slow, narrate_name, narrate_pitch, midi_out)
         self.midi_arr = midi_arr
+        self.slow = slow
 
     def _play(self):
         if len(self.midi_arr) == 0:
@@ -88,7 +89,7 @@ class MidiEventNarrator(MidiNarrator):
             delay = temp
             new_arr.append(elem)
         for event_type, note, delay in self.midi_arr:
-            time.sleep(delay / 1000)
+            time.sleep((delay * self.slow) / 1000)
             if not self.stop:
                 if event_type == "on":
                     self.midi_out.note_on(note, 100)
