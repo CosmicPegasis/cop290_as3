@@ -11,7 +11,14 @@ class PitchGame(MidiGame):
         super().__init__(self.notes, note_length, narrate_pitch, narrate_name)
 
     def generate_random_midi_notes(self, num_notes, note_length):
-        return [[random.randint(12, 115), 100, note_length] for _ in range(num_notes)]
+        delay = note_length
+        notes = []
+        for _ in range(num_notes):
+            note = random.randint(12, 115)
+            notes.append(["on", note, 1000 * delay])
+            notes.append(["off", note, 1000 * (delay + note_length / 2)])
+            delay += note_length
+        return notes
 
     def initialise_narrator(self, narrate_pitch, narrate_name):
         self.midi_narrator = play.MidiEventNarrator(

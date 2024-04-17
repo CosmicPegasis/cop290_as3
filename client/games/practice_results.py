@@ -13,7 +13,7 @@ import client.menu.practice_para as parameter_parameter_pitch
 
 
 class PracticeResults(Menu):
-    def __init__(self, score, narrate_name, narrate_pitch, note_length):
+    def __init__(self, score, narrate_pitch, note_length):
         super().__init__("assets/single/background.mp3")
         self.OPTIONS = ["Info", "Play Again", "Back"]
         pygame.mixer.music.pause()
@@ -21,10 +21,11 @@ class PracticeResults(Menu):
         self.asset_man.load_sound("info", "assets/info.mp3")
         self.asset_man.load_sound("play_again", "assets/pitch/play_again.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
+        self.asset_man.load_sound("info_results", "assets/parameters/info_results.mp3")
         self.score = score
-        self.narrate_name = narrate_name
         self.narrate_pitch = narrate_pitch
         self.note_length = note_length
+        self.info_sound_playing = False
         time.sleep(1)
         self.play_sound("your_score_is")
         time.sleep(2)
@@ -35,17 +36,17 @@ class PracticeResults(Menu):
 
     def handle_selection(self, selected_option):
         if selected_option == 0:
-            print("This is info.")
+            self.play_info_sound()
         elif selected_option == 1:
             self.switch_screen = True
             self.new_screen = practice_pitch.Practice_game(
-                self.narrate_name, self.narrate_pitch, self.note_length
+                self.narrate_pitch, self.note_length
             )
             pygame.mixer.music.pause()
         elif selected_option == 2:
             self.switch_screen = True
             self.new_screen = parameter_parameter_pitch.Parameters_practice(
-                self.narrate_name, self.narrate_pitch, self.note_length, -1
+                self.narrate_pitch, self.note_length, -1
             )
             pygame.mixer.music.pause()
         return True
@@ -60,6 +61,14 @@ class PracticeResults(Menu):
             time.sleep(0.3)
             self.asset_man.load_sound(digit, path_sd)
             self.play_sound(digit)
+
+    def play_info_sound(self):
+        self.play_sound("info_results")
+        self.info_sound_playing = True
+
+    def stop_info_sound(self):
+        self.asset_man.sounds["info_results"].stop()
+        self.info_sound_playing = False
 
     def render(self, window):
         window.fill(BLACK)

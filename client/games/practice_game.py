@@ -16,16 +16,14 @@ import client.menu.parameter_learn_pitch as parameter_learn_pitch
 
 
 class Practice_game(Menu):
-    def __init__(self, narrate_name, narrate_pitch, note_length):
+    def __init__(self, narrate_pitch, note_length):
         super().__init__("assets/single/background.mp3")
         self.OPTIONS = ["Back", "Halt"]
         self.flag = 0
 
         self.asset_man.load_sound("back", "assets/back.mp3")
 
-        self.game_screen = pitch_game.PitchGame(
-            note_length, narrate_pitch, narrate_name
-        )
+        self.game_screen = pitch_game.PitchGame(note_length, narrate_pitch)
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
 
         self.asset_man.load_sound("3", "assets/numbers/3.mp3")
@@ -37,7 +35,6 @@ class Practice_game(Menu):
         )
         self.game_type = "practice"
         self.halt_flag = 0
-        self.narrate_name = narrate_name
         self.narrate_pitch = narrate_pitch
         self.note_length = note_length
 
@@ -66,7 +63,7 @@ class Practice_game(Menu):
             print("game stopped")
             self.switch_screen = True
             self.new_screen = parameter_practice_pitch.Parameters_practice(
-                self.narrate_name, self.narrate_pitch, self.note_length, -1
+                self.narrate_pitch, self.note_length, -1
             )
             print("screen set")
         elif selected_option == 1:
@@ -75,7 +72,7 @@ class Practice_game(Menu):
             print("game stopped")
             self.switch_screen = True
             self.new_screen = practice_results.PracticeResults(
-                score, self.narrate_name, self.narrate_pitch, self.note_length
+                score, self.narrate_pitch, self.note_length
             )
             print("screen set")
 
