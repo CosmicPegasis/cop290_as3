@@ -119,6 +119,12 @@ class Parameters(Menu):
     def render(self, window):
         window.fill(BLACK)
 
+        txt_font = pygame.font.Font(None, 48)
+        txt_text = txt_font.render("Learn Pitch", True, WHITE)
+        txt_text_rect = txt_text.get_rect()
+        txt_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
+        window.blit(txt_text, txt_text_rect)
+
         for i, option in enumerate(self.OPTIONS):
             if i == self.selected_option:
                 color = SELECTED_COLOR

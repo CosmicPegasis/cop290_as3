@@ -15,7 +15,7 @@ class Waiting(Menu):
     def __init__(self):
         self.helper()
         super().__init__("assets/versus/background.mp3")
-        self.OPTIONS = ["Back"]
+        self.OPTIONS = []
         self.asset_man.load_sound("server_is_down", "assets/server_is_down.mp3")
         self.asset_man.load_sound("waiting", "assets/versus/waiting.mp3")
         self.asset_man.load_sound("connected", "assets/versus/connected.mp3")
@@ -40,23 +40,17 @@ class Waiting(Menu):
 
     def render(self, window):
         window.fill(BLACK)
-
-        for i, option in enumerate(self.OPTIONS):
-            score_font = pygame.font.Font(None, 48)
-            score_text = score_font.render("Waiting for a Player...", True, WHITE)
-            score_text_rect = score_text.get_rect()
-            score_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
-            window.blit(score_text, score_text_rect)
-
-            if i == self.selected_option:
-                color = SELECTED_COLOR
-            else:
-                color = WHITE
-
-            text = self.font.render(option, True, color)
-            text_rect = text.get_rect()
-            text_rect.midtop = (
-                WINDOW_WIDTH // 2,
-                WINDOW_HEIGHT // 2 - len(self.OPTIONS) * 36 // 2 + i * 36,
-            )
-            window.blit(text, text_rect)
+        score_font = pygame.font.Font(None, 48)
+        score_text = score_font.render("Waiting for a player...", True, WHITE)
+        score_text_rect = score_text.get_rect()
+        score_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
+        window.blit(score_text, score_text_rect)
+        text = self.font.render(
+            "Press 'Downward arrow key' to exit waiting", True, WHITE
+        )
+        text_rect = text.get_rect()
+        text_rect.midtop = (
+            WINDOW_WIDTH // 2,
+            WINDOW_HEIGHT // 2 - 1 * 36 // 2 + 0 * 36,
+        )
+        window.blit(text, text_rect)

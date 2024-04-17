@@ -16,10 +16,11 @@ import time
 class BattleResults(Menu):
     def __init__(self, move1, move2, player_id):
         super().__init__("assets/versus/background.mp3")
-        self.OPTIONS = ["Play Again", "Back"]
-
+        self.OPTIONS = ["Info", "Play Again", "Back"]
+        self.info_sound_playing = False
         self.asset_man.load_sound("play_again", "assets/pitch/play_again.mp3")
-
+        self.asset_man.load_sound("info", "assets/info.mp3")
+        self.asset_man.load_sound("info_results", "assets/parameters/info_results.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.move1 = move1
         self.move2 = move2
@@ -27,20 +28,28 @@ class BattleResults(Menu):
         self.game_type == "battle_results"
         self.asset_man.load_sound("your_score_is", "assets/pitch/your_score_is.mp3")
         self.asset_man.load_sound("oppo_score_is", "assets/pitch/oppo_score_is.mp3")
-        # time.sleep(1)
-        # self.play_sound("your_score_is")
-        # time.sleep(2)
-        # self.load_score(move1)
-        # time.sleep(1)
-        # self.play_sound("oppo_score_is")
-        # time.sleep(2)
-        # self.load_score(move2)
+        time.sleep(1)
+        self.play_sound("your_score_is")
+        time.sleep(2)
+        if player_id == 0:
+            self.load_score(move1)
+        else:
+            self.load_score(move2)
+        time.sleep(1)
+        self.play_sound("oppo_score_is")
+        time.sleep(2)
+        if player_id == 0:
+            self.load_score(move2)
+        else:
+            self.load_score(move1)
 
     def update(self):
         pass
 
     def handle_selection(self, selected_option):
         if selected_option == 0:
+            self.play_info_sound()
+        elif selected_option == 1:
             self.switch_screen = True
             self.new_screen = waiting.Waiting_Battle()
             pygame.mixer.music.pause()
@@ -59,6 +68,14 @@ class BattleResults(Menu):
             time.sleep(0.3)
             self.asset_man.load_sound(digit, path_sd)
             self.play_sound(digit)
+
+    def play_info_sound(self):
+        self.play_sound("info_results")
+        self.info_sound_playing = True
+
+    def stop_info_sound(self):
+        self.asset_man.sounds["info_results"].stop()
+        self.info_sound_playing = False
 
     def render(self, window):
         window.fill(BLACK)
@@ -106,3 +123,13 @@ class BattleResults(Menu):
                 WINDOW_HEIGHT // 2 - len(self.OPTIONS) * 36 // 2 + i * 36,
             )
             window.blit(text, text_rect)
+
+    def handle_events(self, events) -> bool:
+        for event in events:
+            if event.type == pygame.QUIT:
+                return False
+            elif event.type == pygame.KEYDOWN:
+                if self.info_sound_playing:
+                    self.stop_info_sound()
+
+        return super().handle_events(events)

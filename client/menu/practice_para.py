@@ -3,7 +3,7 @@ import client.menu.main_menu as main_menu
 import client.menu.pitch_results as pitch_results
 import client.games.learn_pitch as learn_pitch
 import client.games.practice_results as practice_results
-
+import client.games.practice_game as practice_game
 import pygame
 import client.games.base_game as base_game
 import client.menu.single_player as single_player
@@ -18,11 +18,10 @@ from client.utils.constants import (
 
 
 class Parameters_practice(Menu):
-    def __init__(self, narrate_name, narrate_pitch, note_length, selected_option):
+    def __init__(self, narrate_pitch, note_length, selected_option):
         super().__init__("assets/single/background.mp3")
         self.OPTIONS = [
             "Info",
-            "Narrate name",
             "Narrate pitch",
             "Note length",
             "Play",
@@ -43,7 +42,6 @@ class Parameters_practice(Menu):
         self.score = 0
         self.selected_option = selected_option
 
-        self.narrate_name = narrate_name
         self.narrate_pitch = narrate_pitch
         self.note_length = note_length
         self.asset_man.load_sound("on", "assets/parameters/on.mp3")
@@ -70,17 +68,6 @@ class Parameters_practice(Menu):
         if selected_option == 0:
             self.play_info_sound()
         elif selected_option == 1:
-            self.narrate_name = not (self.narrate_name)
-            self.switch_screen = True
-            if self.narrate_name:
-                self.play_sound("on")
-            else:
-                self.play_sound("off")
-            self.new_screen = Parameters_practice(
-                self.narrate_name, self.narrate_pitch, self.note_length, selected_option
-            )
-            pygame.mixer.music.pause()
-        elif selected_option == 2:
             self.narrate_pitch = not (self.narrate_pitch)
             self.switch_screen = True
             if self.narrate_pitch:
@@ -88,20 +75,20 @@ class Parameters_practice(Menu):
             else:
                 self.play_sound("off")
             self.new_screen = Parameters_practice(
-                self.narrate_name, self.narrate_pitch, self.note_length, selected_option
+                self.narrate_pitch, self.note_length, selected_option
             )
             pygame.mixer.music.pause()
-        elif selected_option == 3:
+        elif selected_option == 2:
             self.note_length = self.note_length + 1
             self.switch_screen = True
             self.new_screen = Parameters_practice(
-                self.narrate_name, self.narrate_pitch, self.note_length, selected_option
+                self.narrate_pitch, self.note_length, selected_option
             )
             pygame.mixer.music.pause()
-        elif selected_option == 4:
+        elif selected_option == 3:
             self.switch_screen = True
-            self.new_screen = learn_pitch.LearnPitch(
-                self.narrate_name, self.narrate_pitch, self.note_length
+            self.new_screen = practice_game.Practice_game(
+                self.narrate_pitch, self.note_length
             )
             pygame.mixer.music.pause()
         else:
@@ -120,6 +107,11 @@ class Parameters_practice(Menu):
 
     def render(self, window):
         window.fill(BLACK)
+        txt_font = pygame.font.Font(None, 48)
+        txt_text = txt_font.render("Practice Pitch", True, WHITE)
+        txt_text_rect = txt_text.get_rect()
+        txt_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
+        window.blit(txt_text, txt_text_rect)
         for i, option in enumerate(self.OPTIONS):
             if i == self.selected_option:
                 color = SELECTED_COLOR
@@ -128,15 +120,10 @@ class Parameters_practice(Menu):
 
             if i == 1:
                 value = "OFF"
-                if self.narrate_name == True:
-                    value = "ON"
-                text = self.font.render(option + " - " + value, True, color)
-            elif i == 2:
-                value = "OFF"
                 if self.narrate_pitch == True:
                     value = "ON"
                 text = self.font.render(option + " - " + value, True, color)
-            elif i == 3:
+            elif i == 2:
                 value = str(self.note_length)
                 text = self.font.render(option + " - " + value, True, color)
             else:
@@ -165,15 +152,14 @@ class Parameters_practice(Menu):
                         len(self.OPTIONS) - 1, self.selected_option + 1
                     )
                 elif event.key == pygame.K_RETURN:
-                    if self.selected_option != 3:
+                    if self.selected_option != 2:
                         if not self.handle_selection(self.selected_option):
                             return False
                 elif event.key == pygame.K_RIGHT:
-                    if self.selected_option == 3:
+                    if self.selected_option == 2:
                         self.note_length = self.note_length + 1
                         self.switch_screen = True
                         self.new_screen = Parameters_practice(
-                            self.narrate_name,
                             self.narrate_pitch,
                             self.note_length,
                             self.selected_option,
@@ -183,11 +169,10 @@ class Parameters_practice(Menu):
                         return True
 
                 elif event.key == pygame.K_LEFT:
-                    if self.selected_option == 3:
+                    if self.selected_option == 2:
                         self.note_length = max(1, self.note_length - 1)
                         self.switch_screen = True
                         self.new_screen = Parameters_practice(
-                            self.narrate_name,
                             self.narrate_pitch,
                             self.note_length,
                             self.selected_option,

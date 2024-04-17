@@ -15,10 +15,11 @@ import pygame
 class MultiGameResults(Menu):
     def __init__(self, move1, move2, player_id):
         super().__init__("assets/versus/background.mp3")
-        self.OPTIONS = ["Play Again", "Back"]
-
+        self.OPTIONS = ["Info", "Play Again", "Back"]
+        self.info_sound_playing = False
         self.asset_man.load_sound("play_again", "assets/pitch/play_again.mp3")
-
+        self.asset_man.load_sound("info", "assets/info.mp3")
+        self.asset_man.load_sound("info_results", "assets/parameters/info_results.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.move1 = move1
         self.move2 = move2
@@ -56,6 +57,8 @@ class MultiGameResults(Menu):
 
     def handle_selection(self, selected_option):
         if selected_option == 0:
+            self.play_info_sound()
+        elif selected_option == 1:
             self.switch_screen = True
             self.new_screen = waiting.Waiting()
             pygame.mixer.music.pause()
@@ -63,6 +66,14 @@ class MultiGameResults(Menu):
             self.switch_screen = True
             self.new_screen = versus.Versus()
         return True
+
+    def play_info_sound(self):
+        self.play_sound("info_results")
+        self.info_sound_playing = True
+
+    def stop_info_sound(self):
+        self.asset_man.sounds["info_results"].stop()
+        self.info_sound_playing = False
 
     def render(self, window):
         window.fill(BLACK)
@@ -110,3 +121,13 @@ class MultiGameResults(Menu):
                 WINDOW_HEIGHT // 2 - len(self.OPTIONS) * 36 // 2 + i * 36,
             )
             window.blit(text, text_rect)
+
+    def handle_events(self, events) -> bool:
+        for event in events:
+            if event.type == pygame.QUIT:
+                return False
+            elif event.type == pygame.KEYDOWN:
+                if self.info_sound_playing:
+                    self.stop_info_sound()
+
+        return super().handle_events(events)

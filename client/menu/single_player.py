@@ -9,6 +9,13 @@ import client.games.base_game as base_game
 import client.menu.parameter_learn_pitch as parameter_learn_pitch
 import client.menu.practice_para as parameter_practice_pitch
 import time
+from client.utils.constants import (
+    BLACK,
+    WHITE,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+    SELECTED_COLOR,
+)
 
 
 class SinglePlayer(Menu):
@@ -46,9 +53,7 @@ class SinglePlayer(Menu):
         elif selected_option == 3:
 
             self.switch_screen = True
-            self.new_screen = parameter_practice_pitch.Parameters_practice(
-                True, True, 3, -1
-            )
+            self.new_screen = parameter_practice_pitch.Parameters_practice(True, 3, -1)
             pygame.mixer.music.pause()
         else:
             self.switch_screen = True
@@ -73,3 +78,26 @@ class SinglePlayer(Menu):
                     self.stop_info_sound()
 
         return super().handle_events(events)
+
+    def render(self, window):
+        window.fill(BLACK)
+
+        txt_font = pygame.font.Font(None, 48)
+        txt_text = txt_font.render("Single Player", True, WHITE)
+        txt_text_rect = txt_text.get_rect()
+        txt_text_rect.midtop = (WINDOW_WIDTH // 2, 50)
+        window.blit(txt_text, txt_text_rect)
+
+        for i, option in enumerate(self.OPTIONS):
+            if i == self.selected_option:
+                color = SELECTED_COLOR
+            else:
+                color = WHITE
+
+            text = self.font.render(option, True, color)
+            text_rect = text.get_rect()
+            text_rect.midtop = (
+                WINDOW_WIDTH // 2,
+                WINDOW_HEIGHT // 2 - len(self.OPTIONS) * 36 // 2 + i * 36,
+            )
+            window.blit(text, text_rect)

@@ -14,22 +14,28 @@ from client.utils.constants import (
 class Versus(Menu):
     def __init__(self, message=None):
         super().__init__("assets/versus/background.mp3")
-        self.OPTIONS = ["Find Match", "Back"]
+        self.OPTIONS = ["Info", "Find Match", "Back"]
         self.message = message
+        self.asset_man.load_sound("info", "assets/info.mp3")
         self.asset_man.load_sound("find_match", "assets/versus/find_match.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
-        # self.asset_man.load_sound("info_versus", "assets/versus/info_versus.mp3")
-        # self.info_sound_playing = False
+        self.asset_man.load_sound("exit_waiting", "assets/versus/exit_waiting.mp3")
+        self.asset_man.load_sound(
+            "info_find_match", "assets/versus/info_find_match.mp3"
+        )
+        self.info_sound_playing = False
 
     def update(self):
         pass
 
     def handle_selection(self, selected_option):
         if selected_option == 0:
+            self.play_info_sound()
+        elif selected_option == 1:
             self.switch_screen = True
             self.new_screen = waiting.Waiting()
             pygame.mixer.music.pause()
-        elif selected_option == 1:
+        elif selected_option == 2:
             self.switch_screen = True
             self.new_screen = main_menu.MainMenu()
         return True
@@ -63,20 +69,20 @@ class Versus(Menu):
             )
             window.blit(text, text_rect)
 
-    # def play_info_sound(self):
-    #     self.play_sound("info_versus")
-    #     self.info_sound_playing = True
+    def play_info_sound(self):
+        self.play_sound("info_find_match")
+        self.info_sound_playing = True
 
-    # def stop_info_sound(self):
-    #     self.asset_man.sounds["info_versus"].stop()
-    #     self.info_sound_playing = False
+    def stop_info_sound(self):
+        self.asset_man.sounds["info_find_match"].stop()
+        self.info_sound_playing = False
 
-    # def handle_events(self, events) -> bool:
-    #     for event in events:
-    #         if event.type == pygame.QUIT:
-    #             return False
-    #         elif event.type == pygame.KEYDOWN:
-    #             if self.info_sound_playing:
-    #                 self.stop_info_sound()
+    def handle_events(self, events) -> bool:
+        for event in events:
+            if event.type == pygame.QUIT:
+                return False
+            elif event.type == pygame.KEYDOWN:
+                if self.info_sound_playing:
+                    self.stop_info_sound()
 
-    #     return super().handle_events(events)
+        return super().handle_events(events)
