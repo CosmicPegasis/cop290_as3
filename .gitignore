@@ -1,5 +1,4 @@
 .venv/
 __pycache__/
-assets/
 temp.py
 *.sf2
