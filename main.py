@@ -68,7 +68,6 @@ while running:
             score = cur_screen.game_screen.stop()
             cur_screen.new_screen = practice_results.PracticeResults(
                 score,
-                cur_screen.narrate_name,
                 cur_screen.narrate_pitch,
                 cur_screen.note_length,
             )
@@ -104,6 +103,8 @@ while running:
 
         except:
             print("Server is Down")
+            if cur_screen.game_type == "versus_waiting":
+                cur_screen.asset_man.sounds["waiting"].stop()
             cur_screen.play_sound("server_is_down")
             time.sleep(2)
             cur_screen.new_screen = versus.Versus("Server is Down")
@@ -119,12 +120,15 @@ while running:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_DOWN:
                         print("entered stop")
+                        cur_screen.asset_man.sounds["waiting"].stop()
                         cur_screen.new_screen = versus.Versus()
                         print("game stopped")
                         n.send("DISCONNECTED")
                         n.send("DISCONNECTED")
                         is_network_initiated = 0
                         cur_screen = cur_screen.new_screen
+                        cur_screen.play_sound("exit_waiting")
+                        time.sleep(1)
 
         if cur_screen.game_type == "versus_act_mult_game":
             score_mid1 = 0
@@ -151,20 +155,20 @@ while running:
                 else:
                     score_mid1 = cur_screen.game_screen.stop()
                 cur_screen.play_sound("game_halted")
-                print(score_mid1, score_mid2, player)
+
                 print("A")
                 cur_screen.new_screen = multiplayer_game_result.MultiGameResults(
-                    str(score_mid1), str(score_mid2), player
+                    str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
                 is_network_initiated = 0
 
             if halt == 1:
                 cur_screen.play_sound("game_halted")
-                print(score_mid2, score_mid1, player)
+
                 print("B")
                 cur_screen.new_screen = multiplayer_game_result.MultiGameResults(
-                    str(score_mid2), str(score_mid1), player
+                    str(0), str(0), player
                 )
                 cur_screen = cur_screen.new_screen
                 is_network_initiated = 0
@@ -198,6 +202,7 @@ while running:
                 print("BothWent")
                 move1 = game.get_player_move(0)
                 move2 = game.get_player_move(1)
+                print("C")
                 cur_screen.new_screen = multiplayer_game_result.MultiGameResults(
                     move1, move2, player
                 )
@@ -243,6 +248,8 @@ while running:
                 print(e)
         except Exception as e:
             print("could not connect to the server.")
+            if cur_screen.game_type == "battle_waiting":
+                cur_screen.asset_man.sounds["waiting"].stop()
             cur_screen.play_sound("server_is_down")
             time.sleep(2)
             cur_screen.new_screen = battle.Battle("Server is down")
@@ -258,25 +265,20 @@ while running:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_DOWN:
                         print("entered stop")
+                        cur_screen.asset_man.sounds["waiting"].stop()
                         cur_screen.new_screen = battle.Battle()
                         print("game stopped")
                         n.send("DISCONNECTED")
                         n.send("DISCONNECTED")
                         is_network_initiated = 0
                         cur_screen = cur_screen.new_screen
+                        cur_screen.play_sound("exit_waiting")
+                        time.sleep(1)
 
         if game != None and cur_screen.game_type == "battle_results":
             score_t1 = game.moves[0]
             score_t2 = game.moves[1]
             cur_screen.play_sound("game_halted")
-            time.sleep(1)
-            cur_screen.play_sound("your_score_is")
-            time.sleep(2)
-            cur_screen.load_score(0)
-            time.sleep(1)
-            cur_screen.play_sound("oppo_score_is")
-            time.sleep(2)
-            cur_screen.load_score(0)
             print("F")
             cur_screen.new_screen = battle_game_results.BattleResults(
                 str(0), str(0), player
@@ -290,14 +292,6 @@ while running:
             if cur_screen.game_type == "battle_listen_mult_game":
                 cur_screen.game_screen.stop()
             cur_screen.play_sound("game_halted")
-            time.sleep(1)
-            cur_screen.play_sound("your_score_is")
-            time.sleep(2)
-            cur_screen.load_score(0)
-            time.sleep(1)
-            cur_screen.play_sound("oppo_score_is")
-            time.sleep(2)
-            cur_screen.load_score(0)
             print("F")
             cur_screen.new_screen = battle_game_results.BattleResults(
                 str(0), str(0), player
@@ -321,14 +315,6 @@ while running:
                 print("One halted")
                 # score_mid1 = cur_screen.game_screen.stop()
                 cur_screen.play_sound("game_halted")
-                time.sleep(1)
-                cur_screen.play_sound("your_score_is")
-                time.sleep(2)
-                cur_screen.load_score(0)
-                time.sleep(1)
-                cur_screen.play_sound("oppo_score_is")
-                time.sleep(2)
-                cur_screen.load_score(0)
                 print("E")
                 cur_screen.new_screen = battle_game_results.BattleResults(
                     str(0), str(0), player
@@ -338,14 +324,6 @@ while running:
 
             if halt == 1:
                 cur_screen.play_sound("game_halted")
-                time.sleep(1)
-                cur_screen.play_sound("your_score_is")
-                time.sleep(2)
-                cur_screen.load_score(0)
-                time.sleep(1)
-                cur_screen.play_sound("oppo_score_is")
-                time.sleep(2)
-                cur_screen.load_score(0)
                 print("D")
                 cur_screen.new_screen = battle_game_results.BattleResults(
                     str(0), str(0), player
@@ -370,14 +348,6 @@ while running:
                 print("One halted")
                 # score_mid1 = cur_screen.game_screen.stop()
                 cur_screen.play_sound("game_halted")
-                time.sleep(1)
-                cur_screen.play_sound("your_score_is")
-                time.sleep(2)
-                cur_screen.load_score(0)
-                time.sleep(1)
-                cur_screen.play_sound("oppo_score_is")
-                time.sleep(2)
-                cur_screen.load_score(0)
                 print("C")
                 cur_screen.new_screen = battle_game_results.BattleResults(
                     str(0), str(0), player
@@ -387,14 +357,6 @@ while running:
 
             if halt == 1:
                 cur_screen.play_sound("game_halted")
-                time.sleep(1)
-                cur_screen.play_sound("your_score_is")
-                time.sleep(2)
-                cur_screen.load_score(0)
-                time.sleep(1)
-                cur_screen.play_sound("oppo_score_is")
-                time.sleep(2)
-                cur_screen.load_score(0)
                 print("B")
                 cur_screen.new_screen = battle_game_results.BattleResults(
                     str(0), str(0), player
@@ -499,14 +461,7 @@ while running:
                 if round > 1:
                     score1 = game.moves[0]
                     score2 = game.moves[1]
-                    time.sleep(1)
-                    cur_screen.play_sound("your_score_is")
-                    time.sleep(2)
-                    cur_screen.load_score(score1)
-                    time.sleep(1)
-                    cur_screen.play_sound("oppo_score_is")
-                    time.sleep(2)
-                    cur_screen.load_score(score2)
+
                     print("A")
                     cur_screen.new_screen = battle_game_results.BattleResults(
                         str(score1), str(score2), player
