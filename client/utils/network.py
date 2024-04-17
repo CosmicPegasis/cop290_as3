@@ -10,7 +10,9 @@ class Network:
         self.port = 5555
         self.addr = (self.server, self.port)
         self.client.connect(self.addr)
-        self.client_number = int((self.client.getsockname())[1])
+        # self.client_number = int((self.client.getsockname())[1])
+        self.client_number = pickle.loads(self.recv_one_message())
+        print(self.client_number)
 
     def send(self, data):
         temp = data

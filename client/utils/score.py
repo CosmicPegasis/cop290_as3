@@ -19,6 +19,7 @@ def calc_score(to_score, reference, note_length):
                 and elem_to_score[1] == elem_reference[1]
                 and abs(elem_to_score[2] - elem_reference[2]) <= 2000
             ):
+                reference.remove(elem_reference)
                 score += 100
                 break
 
