@@ -141,7 +141,7 @@ while running:
                     score_mid2 = cur_screen.game_screen.stop()
                     n.send("DISCONNECTED")
                     pygame.quit()
-                elif event.type == pygame.KEYDOWN:
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                     print("entered stop")
                     if player == 1:
                         score_mid2 = cur_screen.game_screen.stop()
