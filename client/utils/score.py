@@ -22,5 +22,6 @@ def calc_score(to_score, reference, note_length):
                 reference.remove(elem_reference)
                 score += 100
                 break
-
-    return score
+        else:
+            score -= 50
+    return max(score, 0)
