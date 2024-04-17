@@ -39,6 +39,7 @@ if __name__ == "__main__":
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
     try:
         s.bind((server, port))
     except socket.error as e:
@@ -103,7 +104,7 @@ if __name__ == "__main__":
         print("Connected to: ", int(addr[1]))
         idCount = idCount + 1
         flag = 0
-
+        send_one_message(conn, pickle.dumps(int(addr[1])))
         game_mode = pickle.loads(recv_one_message(conn))
         if game_mode:
             send_one_message(conn, (pickle.dumps("ok")))
