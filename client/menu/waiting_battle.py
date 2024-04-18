@@ -17,6 +17,7 @@ class Waiting_Battle(Menu):
         self.OPTIONS = []
         self.asset_man.load_sound("server_is_down", "assets/server_is_down.mp3")
         self.asset_man.load_sound("waiting", "assets/versus/waiting.mp3")
+        self.asset_man.load_sound("game_halted", "assets/game_halted.mp3")
         self.asset_man.load_sound("connected", "assets/versus/connected.mp3")
         self.asset_man.load_sound("back", "assets/back.mp3")
         self.game_type = "battle_waiting"
